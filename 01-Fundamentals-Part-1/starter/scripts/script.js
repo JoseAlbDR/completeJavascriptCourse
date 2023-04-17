@@ -56,7 +56,6 @@ console.log(5 + 6 + "4" + 9 - 4 - 2); // 1143
 // }
 
 // The switch Statement
-
 switch (languaje.toLowerCase()) {
   case "chinese" || "mandarin":
     console.log("MOST number of native speakers!");
@@ -76,3 +75,27 @@ switch (languaje.toLowerCase()) {
   default:
     console.log("Great languaje too :D");
 }
+
+// The Conditional(Ternary) Operator
+const age = 23;
+age >= 15
+  ? console.log("I like to drink wine.")
+  : console.log("I like to drink water");
+
+const drink = age >= 18 ? "wine" : "water";
+console.log(drink);
+
+let drink2;
+if (age >= 18) {
+  drink2 = "wine ";
+} else {
+  drink2 = "water";
+}
+console.log(drink2);
+
+console.log(`I like to drink ${age >= 18 ? "wine" : "water"}`);
+
+// population = 13;
+population > 33
+  ? console.log(`${country}'s population is above average.`)
+  : console.log(`${country}'s population is below average.`);
