@@ -20,7 +20,7 @@ let marks = {
 let john = {
   name: "John",
   weight: 92,
-  height: 1.76,
+  height: 1.95,
 };
 
 // Function to calculate BMI
