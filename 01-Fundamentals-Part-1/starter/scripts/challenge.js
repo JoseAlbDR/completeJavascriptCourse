@@ -12,8 +12,8 @@ GOOD LUCK 😀
 */
 
 // Variables for TEST DATA 1
-let marks = {
-  name: "Marks",
+let mark = {
+  name: "Mark",
   weight: 78,
   height: 1.69,
 };
@@ -29,31 +29,58 @@ function calculateBmi(person) {
 }
 
 // Calculate BMI of both
-let marksBmi = calculateBmi(marks);
-let johnBmi = calculateBmi(john);
+mark.bmi = calculateBmi(mark);
+john.bmi = calculateBmi(john);
 
 // Show BMI of both
-console.log(marksBmi);
-console.log(johnBmi);
+console.log(mark.bmi);
+console.log(john.bmi);
 
-// See if Marks has a higher BMI than John and show
-let markHigherBMI = marksBmi > johnBmi;
+// See if mark has a higher BMI than John and show
+let markHigherBMI = mark.bmi > john.bmi;
 console.log(markHigherBMI);
 
 // Change variables for TEST DATA 2
-marks.weight = 95;
-marks.height = 1.88;
-john.weight = 85;
-john.height = 1.76;
+// mark.weight = 95;
+// mark.height = 1.88;
+// john.weight = 85;
+// john.height = 1.76;
 
 // Calculate BMI of both
-marksBmi = calculateBmi(marks);
-johnBmi = calculateBmi(john);
+mark.bmi = calculateBmi(mark);
+john.bmi = calculateBmi(john);
 
 // Show BMI of both
-console.log(marksBmi);
-console.log(johnBmi);
+console.log(mark.bmi);
+console.log(john.bmi);
 
-// See if Marks has a higher BMI than John and show
-markHigherBMI = marksBmi > johnBmi;
+// See if mark has a higher BMI than John and show
+markHigherBMI = mark.bmi > john.bmi;
 console.log(markHigherBMI);
+
+////////////////////////////////////
+// Coding Challenge #2
+
+/*
+Use the BMI example from Challenge #1, and the code you already wrote, and improve it:
+
+1. Print a nice output to the console, saying who has the higher BMI. The message can be either "Mark's BMI is higher than John's!" or "John's BMI is higher than Mark's!"
+2. Use a template literal to include the BMI values in the outputs. Example: "Mark's BMI (28.3) is higher than John's (23.9)!"
+
+HINT: Use an if/else statement 😉
+
+GOOD LUCK 😀
+*/
+
+let bmiResult = "";
+if (markHigherBMI) {
+  bmiResult = "higher";
+} else {
+  bmiResult = "lower";
+}
+
+console.log(
+  `${mark.name}'s BMI (${mark.bmi.toFixed(1)}) is ${bmiResult} than ${
+    john.name
+  }'s (${john.bmi.toFixed(1)})! `
+);
