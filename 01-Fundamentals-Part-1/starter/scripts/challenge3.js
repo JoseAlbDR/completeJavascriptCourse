@@ -32,8 +32,7 @@ let dolphinsAvg = 0;
 let koalasAvg = 0;
 dolphinsScore.map((x) => (dolphinsAvg += x / dolphinsScore.length));
 koalasScore.map((x) => (koalasAvg += x / koalasScore.length));
-console.log(dolphinsAvg);
-console.log(koalasAvg);
+
 // Conditions
 // Dolphis wins
 if (dolphinsAvg > koalasAvg && dolphinsAvg >= 100) {
