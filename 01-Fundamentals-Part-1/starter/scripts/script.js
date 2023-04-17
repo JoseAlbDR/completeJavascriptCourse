@@ -28,3 +28,10 @@ console.log(description);
 
 // Strings and Template Literals
 // Already done it
+
+// Taking Decisions: if / else Statements
+if (population > 33) {
+  console.log(`${country}'s population is above average.`);
+} else {
+  console.log(`${country}'s population is below average.`);
+}
