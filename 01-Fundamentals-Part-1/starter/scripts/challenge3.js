@@ -21,18 +21,19 @@ GOOD LUCK 😀
 // const dolphinsScore = [96, 108, 89];
 // const koalasScore = [88, 91, 110];
 
-const dolphinsScore = [97, 112, 101];
-const koalasScore = [109, 95, 123];
-
 // const dolphinsScore = [97, 112, 101];
-// const koalasScore = [109, 95, 106];
+// const koalasScore = [109, 95, 123];
+
+const dolphinsScore = [97, 112, 101];
+const koalasScore = [109, 95, 106];
 
 // Calculate avg score
 let dolphinsAvg = 0;
 let koalasAvg = 0;
-dolphinsScore.map((x) => (dolphinsAvg += x));
-koalasScore.map((x) => (koalasAvg += x));
-
+dolphinsScore.map((x) => (dolphinsAvg += x / dolphinsScore.length));
+koalasScore.map((x) => (koalasAvg += x / koalasScore.length));
+console.log(dolphinsAvg);
+console.log(koalasAvg);
 // Conditions
 // Dolphis wins
 if (dolphinsAvg > koalasAvg && dolphinsAvg >= 100) {
