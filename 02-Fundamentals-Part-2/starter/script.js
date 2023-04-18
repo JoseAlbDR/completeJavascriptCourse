@@ -27,7 +27,7 @@ function calcAge1(birthYear) {
   return 2037 - birthYear;
 }
 
-// Expresion
+// Expression
 const calcAge2 = function (birthYear) {
   return 2037 - birthYear;
 };
@@ -47,7 +47,7 @@ console.log(firstCountry);
 console.log(secondCountry);
 console.log(thirdCountry);
 
-// Expresion
+// Expression
 const percentageOfWorld2 = function (population) {
   return (population / 7900) * 100;
 };
@@ -59,3 +59,17 @@ thirdCountry = percentageOfWorld2(13);
 console.log(firstCountry);
 console.log(secondCountry);
 console.log(thirdCountry);
+
+// Arrow functions
+const calcAge3 = (birthYear) => 2037 - birthYear;
+console.log(calcAge3(2010));
+
+const yearsUntilRetirement = (birthYear, firstName) => {
+  const age = 2037 - birthYear;
+  return `${firstName} retires in ${67 - age} years`;
+};
+console.log(yearsUntilRetirement(1984, "Alberto"));
+
+// Exercise
+const percentageOfWorld3 = (population) => population - 7900 / 100;
+console.log(percentageOfWorld3(100));
