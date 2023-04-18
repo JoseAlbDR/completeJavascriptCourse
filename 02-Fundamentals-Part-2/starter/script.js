@@ -132,3 +132,21 @@ neighbours.includes("Germany")
 const index = neighbours.indexOf("Marruecos");
 neighbours[index] = "Gibraltar";
 console.log(neighbours);
+
+// Introduction to Objects
+const myCountry = {
+  country: "Spain",
+  capital: "Madrid",
+  languaje: "Spanish",
+  population: 49,
+  neighbours: ["Portugal", "France", "Gibraltar"],
+};
+
+// Dot vs Bracket Notation
+console.log(
+  `${myCountry.country} has ${myCountry.population} million ${myCountry.languaje}-speaking people, ${myCountry.neighbours.length} neighbouring countries and a capital called ${myCountry.capital}`
+);
+
+myCountry.population += 2;
+myCountry["population"] -= 2;
+console.log(myCountry.population);
