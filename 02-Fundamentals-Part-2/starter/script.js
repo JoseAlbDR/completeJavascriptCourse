@@ -189,3 +189,51 @@ console.log(alberto.age);
 // Challenge
 // "Jonas is a 39-year old unemployed, and he has a driver's lisence"
 console.log(alberto.getSummary());
+
+// Loops
+// for (let n = 1; n <= 50; n++) {
+//   console.log(`Voter number ${n} is currently voting.`);
+// }
+
+// Loop arrays
+
+const myArray = [
+  "Alberto",
+  "Delgado",
+  2023 - 1984,
+  "unemployed",
+  ["Guille", "Wanin", "Pelos"],
+];
+
+for (let i = 0; i < myArray.length; i++) {
+  if (typeof myArray[i] !== "string") continue;
+  console.log(myArray[i], typeof myArray[i]);
+}
+
+const years = [1991, 2007, 1969, 2020];
+const ages = [];
+
+for (let year in years) {
+  ages.push(2023 - years[year]);
+}
+console.log(ages);
+
+// Looping Backwards and Loops in Loops
+const listOfNeighbours = [
+  ["Canada", "Mexico"],
+  ["Spain"],
+  ["Norway", "Sweden", "Russia"],
+];
+for (let neigh in listOfNeighbours) {
+  for (let country in listOfNeighbours[neigh]) {
+    console.log(`Neighbour: ${listOfNeighbours[neigh][country]}`);
+  }
+}
+
+// The while Loop
+console.log(population);
+let n = 0;
+while (n < population.length) {
+  console.log(percentageOfWorld1(population[n]).toFixed(2));
+  n++;
+}
