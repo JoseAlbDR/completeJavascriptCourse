@@ -45,7 +45,7 @@ const measureKelvin = function () {
   const measurement = {
     type: "temp",
     unit: "cels",
-    value: Number(prompt("Degrees celcius:")),
+    // value: Number(prompt("Degrees celcius:")),
   };
   console.log(measurement.value);
   console.table(measurement);
