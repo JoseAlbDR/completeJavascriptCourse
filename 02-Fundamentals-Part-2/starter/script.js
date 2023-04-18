@@ -140,13 +140,52 @@ const myCountry = {
   languaje: "Spanish",
   population: 49,
   neighbours: ["Portugal", "France", "Gibraltar"],
+
+  describe: function () {
+    return `${myCountry.country} has ${myCountry.population} million ${myCountry.languaje}-speaking people, ${myCountry.neighbours.length} neighbouring countries and a capital called ${myCountry.capital}`;
+  },
+
+  checkIsland: function () {
+    this.isIsland = this.neighbours.length === 0 ? true : false;
+    return this.isIsland;
+  },
 };
 
 // Dot vs Bracket Notation
-console.log(
-  `${myCountry.country} has ${myCountry.population} million ${myCountry.languaje}-speaking people, ${myCountry.neighbours.length} neighbouring countries and a capital called ${myCountry.capital}`
-);
+console.log(myCountry.describe());
+myCountry.checkIsland();
+console.log(myCountry.isIsland);
 
 myCountry.population += 2;
 myCountry["population"] -= 2;
 console.log(myCountry.population);
+
+// Object methods
+
+const alberto = {
+  firstName: "Alberto",
+  lastName: "Delgado",
+  birthYear: 1984,
+  job: "unemployed",
+  friends: ["Guille", "Wanin", "Pelos"],
+  hasDriverLicense: true,
+
+  calcAge: function () {
+    this.age = 2023 - this.birthYear;
+    console.log(this.age);
+    return this.age;
+  },
+
+  getSummary: function () {
+    return `${this.firstName} is a ${this.age}-year old ${this.job} and ${
+      this.hasDriverLicense ? "he has" : "he has not"
+    } a driver's lisence.`;
+  },
+};
+
+console.log(alberto.calcAge());
+console.log(alberto.age);
+
+// Challenge
+// "Jonas is a 39-year old unemployed, and he has a driver's lisence"
+console.log(alberto.getSummary());
