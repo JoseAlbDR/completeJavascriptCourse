@@ -39,3 +39,21 @@ console.log(calcTempAmplitude(temperaturesOne, temperaturesTwo));
 // Merge arrays
 // 2) Breaking up into sub-problems
 // Merge two arrays
+
+// Debugging
+const measureKelvin = function () {
+  const measurement = {
+    type: "temp",
+    unit: "cels",
+    value: Number(prompt("Degrees celcius:")),
+  };
+  console.log(measurement.value);
+  console.table(measurement);
+  //   console.warn(measurement.value);
+  //   console.error(measurement.value);
+
+  const kelvin = measurement.value + 273;
+  return kelvin;
+};
+// A) IDENFIFY
+console.log(measureKelvin());
