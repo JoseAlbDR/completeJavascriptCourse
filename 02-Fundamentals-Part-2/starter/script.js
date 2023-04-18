@@ -81,3 +81,18 @@ const describePopulation = (country, population) =>
   ).toFixed(2)}% of the world.`;
 
 console.log(describePopulation("China", 1441));
+
+// Arrays
+// Introduction to Arrays
+// Array with populations
+let population = [59, 13, 1441, 70];
+// Check if length === 4
+console.log(population.length === 4 ? true : false);
+let percentages = [];
+// For a position in population
+for (let position in population) {
+  // Add the percentage to the array
+  percentages.push(percentageOfWorld1(population[position]).toFixed(2));
+}
+// Print result
+console.log(percentages);
