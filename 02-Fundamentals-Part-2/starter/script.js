@@ -73,3 +73,11 @@ console.log(yearsUntilRetirement(1984, "Alberto"));
 // Exercise
 const percentageOfWorld3 = (population) => population - 7900 / 100;
 console.log(percentageOfWorld3(100));
+
+// Functions calling other functions
+const describePopulation = (country, population) =>
+  `${country} has ${population} million people, wich is about ${percentageOfWorld1(
+    population
+  ).toFixed(2)}% of the world.`;
+
+console.log(describePopulation("China", 1441));
