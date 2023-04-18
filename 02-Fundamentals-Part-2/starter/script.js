@@ -96,3 +96,39 @@ for (let position in population) {
 }
 // Print result
 console.log(percentages);
+
+// Operations with arrays
+const friends = ["Michael", "Steven", "Peter"];
+// Add
+const newLength = friends.push("Jay");
+console.log(newLength);
+friends.unshift("Jonas");
+console.log(friends);
+// Remove
+console.log(friends.pop());
+console.log(friends.shift());
+console.log(friends);
+// IndexOf
+console.log(friends.indexOf("Peter"));
+console.log(friends.indexOf("Petah"));
+// Include
+friends.push("23");
+console.log(friends.includes("Peter"));
+console.log(friends.includes("Petah"));
+console.log(friends.includes(23));
+
+friends.includes("Peter")
+  ? console.log("You have a friend called Peter.")
+  : console.log("You dont have a friend called Peter.");
+
+// Practice
+const neighbours = ["Portugal", "France", "Marruecos"];
+neighbours.push("Utopia");
+neighbours.pop();
+neighbours.includes("Germany")
+  ? console.log("A central European country.")
+  : console.log("Probably not a central European country :D");
+
+const index = neighbours.indexOf("Marruecos");
+neighbours[index] = "Gibraltar";
+console.log(neighbours);
