@@ -66,7 +66,7 @@ const displayNumber = number => {
   document.querySelector('.number').textContent = number;
 };
 
-const displayScore = (score = 20) => {
+const displayScore = score => {
   document.querySelector('.score').textContent = score;
 };
 
