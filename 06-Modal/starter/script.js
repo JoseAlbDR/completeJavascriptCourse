@@ -48,5 +48,7 @@ overlay.addEventListener('click', closeModal);
 
 // Esc keypress listener
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') closeModal();
+  // Check if the key pressed is Escape and that the modal windows is shown
+  if (event.key === 'Escape' && !modal.classList.contains('hidden'))
+    closeModal();
 });
