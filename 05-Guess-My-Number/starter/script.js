@@ -10,13 +10,8 @@
 
 // // Input
 // document.querySelector('.guess').value = 20;
-
-// Event listener (button)
-const random = Math.trunc(Math.random() * 20) + 1;
-let score = 20;
-let endGame = false;
-// Functionallity of Check button click
-document.querySelector('.check').addEventListener('click', function () {
+// Game Logic
+const gameLogic = function () {
   // If it is not the end of the game
   if (!endGame) {
     // Player guess a number
@@ -64,6 +59,19 @@ document.querySelector('.check').addEventListener('click', function () {
       }
     }
   }
+};
+// Event listener (button)
+let random = Math.trunc(Math.random() * 20) + 1;
+let score = 20;
+let endGame = false;
+// Functionallity of Check button click
+document.querySelector('.check').addEventListener('click', gameLogic);
+
+// Enter keypress on input
+document.querySelector('.guess').addEventListener('keypress', function (event) {
+  if (event.key === 'Enter') {
+    gameLogic();
+  }
 });
 
 // Coding Challenge #1
@@ -84,6 +92,7 @@ document.querySelector('.again').addEventListener('click', function () {
   document.querySelector('.guess').value = '';
   document.querySelector('body').style.backgroundColor = '#222';
   document.querySelector('.number').style.width = '15rem';
+  random = Math.trunc(Math.random() * 20) + 1;
   endGame = false;
 });
 
