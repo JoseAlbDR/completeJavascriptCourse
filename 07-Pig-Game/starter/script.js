@@ -5,13 +5,13 @@ const WINSCORE = 100;
 
 // Active player by default player 1
 let activePlayer = document.querySelector('.player--0');
-let playerCurrent = document.getElementById('current--0');
+let playerCurrentScore = document.getElementById('current--0');
 let playerScore = document.getElementById('score--0');
 
 // Dice vars
 const diceImg = document.querySelector('.dice');
 // Hide the dice image
-diceImg.classList.add('hidden');
+diceImg.classList.toggle('hidden');
 
 // Buttons vars
 const diceRollBtn = document.querySelector('.btn--roll');
@@ -34,7 +34,7 @@ let gameOver = false;
  */
 const rollDice = () => {
   // Only rool the dice if is not game over
-  if (gameOver === false) {
+  if (!gameOver) {
     // Random number to show dice
     const diceNumber = Math.trunc(Math.random() * 6) + 1;
     const diceImgString = `dice-${diceNumber}.png`;
@@ -55,7 +55,7 @@ const rollDice = () => {
  * Show the acumulated score of the currentPlayer
  */
 const showCurrentScore = () => {
-  playerCurrent.textContent = turnScore;
+  playerCurrentScore.textContent = turnScore;
 };
 
 /**
@@ -69,9 +69,9 @@ const checkOne = diceNumber => {
 };
 
 /**
- * Hold the current and switch players
+ * Saves the current player score and switch players
  * If there is a winner stop buttons listener and show
- * Else switch players
+ * IF not switch players
  */
 const holdScore = () => {
   if (!gameOver) {
@@ -82,6 +82,7 @@ const holdScore = () => {
 
 /**
  * Change ccs styles to show the winner
+ * and ends the game
  */
 const showWinner = () => {
   activePlayer.classList.add('player--winner');
@@ -91,15 +92,14 @@ const showWinner = () => {
 
 /**
  * Switch the current player to the next player
- * apliying css styles and setting current to 0
+ * apliying css styles and setting playerCurrentScore to 0
  */
 const switchPlayer = () => {
-  activePlayer.classList.remove('player--active');
-  playerCurrent.textContent = 0;
-  nextPlayer();
-  activePlayer.classList.add('player--active');
-  playerCurrent.textContent = 0;
+  activePlayer.classList.toggle('player--active');
+  playerCurrentScore.textContent = 0;
   turnScore = 0;
+  nextPlayer();
+  activePlayer.classList.toggle('player--active');
 };
 
 /**
@@ -107,9 +107,10 @@ const switchPlayer = () => {
  */
 const nextPlayer = () => {
   // Check whoever the currentPlayer is
-  currentPlayer === 0 ? (currentPlayer = 1) : (currentPlayer = 0);
+  // currentPlayer === 0 ? (currentPlayer = 1) : (currentPlayer = 0);
+  currentPlayer = currentPlayer === 0 ? 1 : 0;
   // Save in vars
-  playerCurrent = document.getElementById(`current--${currentPlayer}`);
+  playerCurrentScore = document.getElementById(`current--${currentPlayer}`);
   playerScore = document.getElementById(`score--${currentPlayer}`);
   activePlayer = document.querySelector(`.player--${currentPlayer}`);
 };
@@ -121,13 +122,12 @@ const saveScore = () => {
   // Check the current player add the current score to his score
   acumScores[currentPlayer] += turnScore;
   playerScore.textContent = acumScores[currentPlayer];
-  playerCurrent.textContent = 0;
 };
 
 /**
- * Reset the score of the current player to 0
+ * Reset the playerScore of the current player to 0
  */
-const resetScore = () => {
+const resetCurrentScore = () => {
   playerScore.textContent = 0;
 };
 
@@ -138,10 +138,9 @@ const resetScore = () => {
 const newGame = () => {
   [acumScores[0], acumScores[1]] = [0, 0];
   diceImg.classList.toggle('hidden');
-  resetScore();
+  resetCurrentScore();
   activePlayer.classList.remove('player--winner');
   switchPlayer();
-  resetScore();
   gameOver = false;
 };
 
