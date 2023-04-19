@@ -19,48 +19,74 @@ const gameLogic = () => {
     const guess = Number(document.querySelector('.guess').value);
     // When there is no input
     if (!guess) {
-      document.querySelector('.message').textContent = 'No number!';
+      displayMessage('No number!');
 
       // When player wins
     } else if (guess === random) {
-      document.querySelector('.message').textContent = 'Correct number!!!!';
-      document.querySelector('.number').textContent = guess;
+      displayMessage('Correct number!!!!');
+      displayNumber(guess);
       // Update highscore
-      if (highScore < score) {
-        highScore = score;
-        document.querySelector('.highscore').textContent = highScore;
-      }
+      highScore = highScore < score ? score : highScore;
+      document.querySelector('.highscore').textContent = highScore;
+
       // Change background color and width
-      document.querySelector('body').style.backgroundColor = '#60b347';
-      document.querySelector('.number').style.width = '30rem';
+      bodyBackgroud('#60b347');
+      numberWidth('30rem');
       endGame = true;
 
-      // When number is higher or lower
+      // When guess is wrong
     } else {
       let higherLower = '';
+      score--;
+      displayScore(score);
       random > guess ? (higherLower = 'higher') : (higherLower = 'lower');
       // Show the message higher or lower
-      document.querySelector(
-        '.message'
-      ).textContent = `The number is ${higherLower}.`;
-      score--;
+      displayMessage(`The number is ${higherLower}.`);
       // Update the score
       if (score > 0) {
-        document.querySelector('.score').textContent = score;
         // When score === 0
       } else {
         endGame = true;
-        document.querySelector('.score').textContent = score;
-        document.querySelector('.message').textContent = 'You lost the game.';
-        document.querySelector('body').style.backgroundColor = '#ffaeae';
-        document.querySelector('.number').style.width = '30rem';
-        document.querySelector('.number').textContent = random;
+        displayScore(score);
+        displayMessage('You lost the game.');
+        bodyBackgroud('#ffaeae');
+        numberWidth('30rem');
+        displayNumber(random);
       }
     }
   }
 };
+
+// Queryselectors Functions
+const displayMessage = message => {
+  document.querySelector('.message').textContent = message;
+};
+
+const displayNumber = number => {
+  document.querySelector('.number').textContent = number;
+};
+
+const displayScore = (score = 20) => {
+  document.querySelector('.score').textContent = score;
+};
+
+const displayGuess = guess => {
+  document.querySelector('.guess').value = guess;
+};
+
+const bodyBackgroud = color => {
+  document.querySelector('body').style.backgroundColor = color;
+};
+
+const numberWidth = width => {
+  document.querySelector('.number').style.width = width;
+};
+
+const randomNumber = () => {
+  return Math.trunc(Math.random() * 20) + 1;
+};
 // Event listener (button)
-let random = Math.trunc(Math.random() * 20) + 1;
+let random = randomNumber();
 let score = 20;
 let highScore = 0;
 let endGame = false;
@@ -87,13 +113,13 @@ document.querySelector('.guess').addEventListener('keypress', function (event) {
 
 document.querySelector('.again').addEventListener('click', function () {
   score = 20;
-  document.querySelector('.message').textContent = 'Start guessing...';
-  document.querySelector('.number').textContent = '?';
-  document.querySelector('.score').textContent = score;
-  document.querySelector('.guess').value = '';
-  document.querySelector('body').style.backgroundColor = '#222';
-  document.querySelector('.number').style.width = '15rem';
-  random = Math.trunc(Math.random() * 20) + 1;
+  displayMessage('Start guessing...');
+  displayNumber('?');
+  displayScore(score);
+  displayGuess('');
+  bodyBackgroud('#222');
+  numberWidth('15rem');
+  random = randomNumber();
   endGame = false;
 });
 
