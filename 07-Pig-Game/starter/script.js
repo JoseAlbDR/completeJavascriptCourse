@@ -1,4 +1,8 @@
 'use strict';
+
+// Const
+const WINSCORE = 100;
+
 // Active player by default player 1
 let activePlayer = document.querySelector('.player--0');
 let playerCurrent = document.getElementById('current--0');
@@ -6,6 +10,8 @@ let playerScore = document.getElementById('score--0');
 
 // Dice vars
 const diceImg = document.querySelector('.dice');
+// Hide the dice image
+diceImg.classList.add('hidden');
 
 // Buttons vars
 const diceRollBtn = document.querySelector('.btn--roll');
@@ -15,29 +21,34 @@ const newGameBtn = document.querySelector('.btn--new');
 // Default player
 let currentPlayer = 0;
 
-// Default score
+// Default scores
 let turnScore = 0;
-let acumPlayer0Score = 0;
-let acumPlayer1Score = 0;
+const acumScores = [99, 0];
 
-// gameOver checker99uuu
+// gameOver checker
 let gameOver = false;
+
 /**
  * Generates a random number between 1 and 6
  * and changes the dice Image
  */
 const rollDice = () => {
-  // Random number to show dice
-  const randomNumber = Math.trunc(Math.random() * 6) + 1;
-  const diceNumber = `dice-${randomNumber}.png`;
-  // Adds the dice valor to the score in this turn
-  turnScore += randomNumber;
-  // Change the dice image
-  diceImg.src = diceNumber;
-  // Show current score
-  showCurrentScore();
-  // Chek if there is a 1
-  checkOne(randomNumber);
+  // Only rool the dice if is not game over
+  if (gameOver === false) {
+    // Random number to show dice
+    const diceNumber = Math.trunc(Math.random() * 6) + 1;
+    const diceImgString = `dice-${diceNumber}.png`;
+    // Show the dice image
+    diceImg.classList.remove('hidden');
+    // Adds the dice valor to the score in this turn
+    turnScore += diceNumber;
+    // Change the dice image
+    diceImg.src = diceImgString;
+    // Chek if there is a 1
+    checkOne(diceNumber);
+    // Show current score
+    showCurrentScore();
+  }
 };
 
 /**
@@ -51,10 +62,10 @@ const showCurrentScore = () => {
  * Chek if the dice is 1, in that case
  * reset the activePlayer acumulated score to 0
  * and switch players
- * @param {*} randomNumber dice number
+ * @param {*} diceNumber dice number
  */
-const checkOne = randomNumber => {
-  if (randomNumber === 1) switchPlayer();
+const checkOne = diceNumber => {
+  if (diceNumber === 1) switchPlayer();
 };
 
 /**
@@ -63,8 +74,10 @@ const checkOne = randomNumber => {
  * Else switch players
  */
 const holdScore = () => {
-  saveScore();
-  playerScore.textContent < 100 ? switchPlayer() : showWinner();
+  if (!gameOver) {
+    saveScore();
+    playerScore.textContent < WINSCORE ? switchPlayer() : showWinner();
+  }
 };
 
 /**
@@ -72,6 +85,7 @@ const holdScore = () => {
  */
 const showWinner = () => {
   activePlayer.classList.add('player--winner');
+  diceImg.classList.toggle('hidden');
   gameOver = true;
 };
 
@@ -105,13 +119,8 @@ const nextPlayer = () => {
  */
 const saveScore = () => {
   // Check the current player add the current score to his score
-  if (currentPlayer === 0) {
-    acumPlayer0Score += turnScore;
-    playerScore.textContent = acumPlayer0Score;
-  } else {
-    acumPlayer1Score += turnScore;
-    playerScore.textContent = acumPlayer1Score;
-  }
+  acumScores[currentPlayer] += turnScore;
+  playerScore.textContent = acumScores[currentPlayer];
   playerCurrent.textContent = 0;
 };
 
@@ -123,11 +132,12 @@ const resetScore = () => {
 };
 
 /**
- * Generates a new game by reseting everything to 0 and switching players
+ * Generates a new game by reseting everything to 0
+ * switching players and hiding dice image
  */
 const newGame = () => {
-  acumPlayer0Score = 0;
-  acumPlayer1Score = 0;
+  [acumScores[0], acumScores[1]] = [0, 0];
+  diceImg.classList.toggle('hidden');
   resetScore();
   activePlayer.classList.remove('player--winner');
   switchPlayer();
@@ -136,8 +146,6 @@ const newGame = () => {
 };
 
 // Listeners
-if (!gameOver) {
-  diceRollBtn.addEventListener('click', rollDice);
-  holdScoreBtn.addEventListener('click', holdScore);
-}
+diceRollBtn.addEventListener('click', rollDice);
+holdScoreBtn.addEventListener('click', holdScore);
 newGameBtn.addEventListener('click', newGame);
