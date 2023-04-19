@@ -10,17 +10,13 @@
 
 // // Input
 // document.querySelector('.guess').value = 20;
+
 // Game Logic
-const gameLogic = function () {
+const gameLogic = () => {
   // If it is not the end of the game
   if (!endGame) {
     // Player guess a number
     const guess = Number(document.querySelector('.guess').value);
-    // Get the current score
-    score = document.querySelector('.score').textContent;
-    console.log(random);
-    // document.querySelector('.guess').value = '';
-
     // When there is no input
     if (!guess) {
       document.querySelector('.message').textContent = 'No number!';
@@ -29,9 +25,12 @@ const gameLogic = function () {
     } else if (guess === random) {
       document.querySelector('.message').textContent = 'Correct number!!!!';
       document.querySelector('.number').textContent = guess;
-      if (Number(document.querySelector('.highscore').textContent) < score) {
-        document.querySelector('.highscore').textContent = score;
+      // Update highscore
+      if (highScore < score) {
+        highScore = score;
+        document.querySelector('.highscore').textContent = highScore;
       }
+      // Change background color and width
       document.querySelector('body').style.backgroundColor = '#60b347';
       document.querySelector('.number').style.width = '30rem';
       endGame = true;
@@ -63,6 +62,7 @@ const gameLogic = function () {
 // Event listener (button)
 let random = Math.trunc(Math.random() * 20) + 1;
 let score = 20;
+let highScore = 0;
 let endGame = false;
 // Functionallity of Check button click
 document.querySelector('.check').addEventListener('click', gameLogic);
@@ -86,9 +86,10 @@ document.querySelector('.guess').addEventListener('keypress', function (event) {
 // Again button, reset all to default
 
 document.querySelector('.again').addEventListener('click', function () {
+  score = 20;
   document.querySelector('.message').textContent = 'Start guessing...';
   document.querySelector('.number').textContent = '?';
-  document.querySelector('.score').textContent = 20;
+  document.querySelector('.score').textContent = score;
   document.querySelector('.guess').value = '';
   document.querySelector('body').style.backgroundColor = '#222';
   document.querySelector('.number').style.width = '15rem';
