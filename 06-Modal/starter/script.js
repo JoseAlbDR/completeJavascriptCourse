@@ -17,25 +17,36 @@ const btnCloseModal = document.querySelector('.close-modal');
 //   });
 
 // To close the modal
+/**
+ * Closes the modal windows
+ * by adding the .hidden class
+ *
+ */
 const closeModal = () => {
   modal.classList.add('hidden');
   overlay.classList.add('hidden');
 };
-
+/**
+ * Show the modal windows
+ * by removing the .hidden class
+ */
 // To show the modal
 const showModal = () => {
   modal.classList.remove('hidden');
   overlay.classList.remove('hidden');
 };
 
-//
+// Add eventListener to buttons
 for (let i = 0; i < btnShowModal.length; i++)
-  btnShowModal[i].addEventListener('click', () => showModal());
+  btnShowModal[i].addEventListener('click', showModal);
 
-// X (Close modal button)
-btnCloseModal.addEventListener('click', () => closeModal());
+// X (Close modal button) listener
+btnCloseModal.addEventListener('click', closeModal);
+
+// Click outside modal close listener
+overlay.addEventListener('click', closeModal);
 
 // Esc keypress listener
-modal.addEventListener('keypress', event => {
+document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeModal();
 });
