@@ -1,8 +1,6 @@
 'use strict';
-// Active player
+// Active player by default player 1
 let activePlayer = document.querySelector('.player--0');
-
-// Default player vars
 let playerCurrent = document.getElementById('current--0');
 let playerScore = document.getElementById('score--0');
 
@@ -22,27 +20,8 @@ let turnScore = 0;
 let acumPlayer0Score = 0;
 let acumPlayer1Score = 0;
 
-/**
- * Check if the dice is 1, in that case
- * reset the activePlayer score to 0
- * and switch players
- *
- */
-
-/**
- * Chek if the dice is 1, in that case
- * reset the activePlayer score to 0
- * and switch players
- * @param {*} randomNumber dice number
- */
-const checkOne = randomNumber => {
-  if (randomNumber === 1) {
-    currentPlayer === 0 ? (acumPlayer0Score = 0) : (acumPlayer1Score = 0);
-    playerScore.textContent = 0;
-    switchPlayer();
-  }
-};
-
+// gameOver checker99uuu
+let gameOver = false;
 /**
  * Generates a random number between 1 and 6
  * and changes the dice Image
@@ -62,34 +41,38 @@ const rollDice = () => {
 };
 
 /**
- * Hold the current and switch players
- */
-const holdScore = () => {
-  saveScore();
-  switchPlayer();
-  turnScore = 0;
-};
-
-/**
- * Save the current score of the active player
- */
-const saveScore = () => {
-  // Check the current player add the current score to his score
-  if (currentPlayer === 0) {
-    acumPlayer0Score += turnScore;
-    playerScore.textContent = acumPlayer0Score;
-  } else {
-    acumPlayer1Score += turnScore;
-    playerScore.textContent = acumPlayer1Score;
-  }
-  playerCurrent.textContent = 0;
-};
-
-/**
  * Show the acumulated score of the currentPlayer
  */
 const showCurrentScore = () => {
   playerCurrent.textContent = turnScore;
+};
+
+/**
+ * Chek if the dice is 1, in that case
+ * reset the activePlayer acumulated score to 0
+ * and switch players
+ * @param {*} randomNumber dice number
+ */
+const checkOne = randomNumber => {
+  if (randomNumber === 1) switchPlayer();
+};
+
+/**
+ * Hold the current and switch players
+ * If there is a winner stop buttons listener and show
+ * Else switch players
+ */
+const holdScore = () => {
+  saveScore();
+  playerScore.textContent < 100 ? switchPlayer() : showWinner();
+};
+
+/**
+ * Change ccs styles to show the winner
+ */
+const showWinner = () => {
+  activePlayer.classList.add('player--winner');
+  gameOver = true;
 };
 
 /**
@@ -118,6 +101,21 @@ const nextPlayer = () => {
 };
 
 /**
+ * Save the current score of the active player
+ */
+const saveScore = () => {
+  // Check the current player add the current score to his score
+  if (currentPlayer === 0) {
+    acumPlayer0Score += turnScore;
+    playerScore.textContent = acumPlayer0Score;
+  } else {
+    acumPlayer1Score += turnScore;
+    playerScore.textContent = acumPlayer1Score;
+  }
+  playerCurrent.textContent = 0;
+};
+
+/**
  * Reset the score of the current player to 0
  */
 const resetScore = () => {
@@ -131,11 +129,15 @@ const newGame = () => {
   acumPlayer0Score = 0;
   acumPlayer1Score = 0;
   resetScore();
+  activePlayer.classList.remove('player--winner');
   switchPlayer();
   resetScore();
+  gameOver = false;
 };
 
 // Listeners
-diceRollBtn.addEventListener('click', rollDice);
-holdScoreBtn.addEventListener('click', holdScore);
+if (!gameOver) {
+  diceRollBtn.addEventListener('click', rollDice);
+  holdScoreBtn.addEventListener('click', holdScore);
+}
 newGameBtn.addEventListener('click', newGame);
