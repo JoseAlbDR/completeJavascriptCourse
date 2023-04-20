@@ -45,6 +45,11 @@ const restaurant = {
   orderPasta: function (ing1, ing2, ing3) {
     console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}.`);
   },
+
+  orderPizza: function (mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  },
 };
 
 restaurant.orderDelivery({
@@ -160,8 +165,9 @@ console.log(...str);
 // ];
 // console.log(ingredients);
 
-restaurant.orderPasta(...ingredients);
+// restaurant.orderPasta(...ingredients);
 
+// DESTRUCTURING
 // Spread in objetes
 const newRestaurant = { foundedIn: 1998, ...restaurant, founder: 'Giuseppe' };
 console.log(newRestaurant);
@@ -170,3 +176,40 @@ const restaurantCopy = { ...restaurant };
 restaurantCopy.name = 'Ristorante Roma';
 console.log(restaurantCopy.name);
 console.log(restaurant.name);
+
+// SPREAD, becaouse on RIGHT side
+const arr2 = [1, 2, ...[3, 4]];
+console.log(arr2);
+
+// REST, becaouse on LEFT side
+const [s, d, ...others] = [1, 2, 3, 4, 5];
+console.log(s, d, others);
+
+const [pizza, , risotto, ...otherFood] = [
+  ...restaurant.mainMenu,
+  ...restaurant.starterMenu,
+];
+console.log(pizza, risotto, otherFood);
+
+// Objects
+const { sat: saturday, ...restOpening } = { ...restaurant.openingHours };
+console.log(saturday, restOpening);
+
+// FUNCTIONS
+const add = function (...args) {
+  let sum = 0;
+  for (let arg in args) {
+    sum += args[arg];
+  }
+  return console.log(sum);
+};
+
+add(2, 3);
+add(5, 3, 7, 2);
+add(8, 2, 5, 3, 2, 1, 4);
+
+const xes = [23, 5, 10, 7];
+add(...xes);
+
+restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinash');
+restaurant.orderPizza('pepperoni');
