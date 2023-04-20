@@ -213,3 +213,68 @@ add(...xes);
 
 restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinash');
 restaurant.orderPizza('pepperoni');
+
+// BOOLEANS
+console.log('------OR------');
+
+// Use ANY data type, return ANY data type, short-circuiting
+// Return the first truthy value
+console.log(3 || 'Jonas');
+console.log(0 || 'Alberto');
+console.log('' || 0);
+console.log(true || 0);
+console.log(undefined || null);
+console.log(undefined || 0 || '' || 'hello' || 23 || null);
+
+restaurant.numGuest = 0;
+// const guest1 = restaurant.numGuest ? restaurant.numGuest : 10;
+// console.log(guest1);
+const guest2 = restaurant.numGuest || 10;
+console.log(guest2);
+
+// Nullish coalising operator: null and undefined (NOT 0 or "")
+const guestCorrect = restaurant.numGuest ?? 10;
+console.log(guestCorrect);
+
+console.log('--------AND-------');
+console.log(0 && 'Jonas');
+console.log(7 && 'Jonas');
+
+console.log('Hello' && 23 && null && 'jonas');
+
+if (restaurant.orderPizza) {
+  restaurant.orderPizza('cheese', 'tomato');
+}
+
+restaurant.orderPizza && restaurant.orderPizza('olives', 'tune');
+
+// Logical asignement operators
+
+const rest1 = {
+  name: 'Capri',
+  numGuest: 20,
+};
+
+const rest2 = {
+  name: 'La Piazza',
+  owner: 'Giovanni Rossi',
+};
+
+// OR assignment operator
+rest2.numGuest = rest2.numGuest ?? 10;
+rest1.numGuest = rest1.numGuest ?? 10;
+console.log(rest1.numGuest);
+console.log(rest2.numGuest);
+
+// If variable (rest*.numGuest) dont exist assign the value
+rest1.numGuest ??= 10;
+rest2.numGuest ??= 10;
+console.log(rest1.numGuest);
+console.log(rest2.numGuest);
+
+rest2.owner = rest2.owner && '<ANONYMOUS';
+console.log(rest2.owner);
+
+// If variable (rest2.owner) exist assign the value
+rest2.owner &&= '<anonymous>';
+console.log(rest2.owner);
