@@ -92,3 +92,41 @@ const z = 3;
 console.log(x === window.x); // true
 console.log(y === window.y); // false
 console.log(z === window.z); // false
+
+// The THIS keyword
+console.log(this);
+
+const calcAge1 = function (birthYear) {
+  console.log(2023 - birthYear);
+  console.log(this);
+};
+calcAge1(1984);
+
+// Arrow function does not have his own this keyword
+// Owns the parent this keyword
+const calcAgeArrow = birthYear => {
+  console.log(2023 - birthYear);
+  console.log(this);
+};
+calcAgeArrow(1984);
+
+const alberto = {
+  year: 1984,
+  calcAge: function () {
+    console.log(this);
+
+    console.log(2023 - this.year);
+  },
+};
+alberto.calcAge();
+
+const matilde = {
+  year: 2017,
+};
+
+// Copy calcAge function to matilde
+matilde.calcAge = alberto.calcAge;
+matilde.calcAge();
+
+const f = alberto.calcAge;
+f();
