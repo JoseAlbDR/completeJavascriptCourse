@@ -69,9 +69,9 @@ function addDecl(a, b) {
   return a + b;
 }
 
-const addExpr = function (a, b) {
-  return a + b;
-};
+// const addExpr = function (a, b) {
+//   return a + b;
+// };
 
 var addArrow = (a, b) => a + b;
 
@@ -110,15 +110,28 @@ const calcAgeArrow = birthYear => {
 };
 calcAgeArrow(1984);
 
+// Var is included in windows object, windows.name
+// var name = 'Pepe';
+
 const alberto = {
+  name: 'Alber',
   year: 1984,
   calcAge: function () {
-    console.log(this);
-
+    // console.log(this);
     console.log(2023 - this.year);
+
+    // Copy this keyword into a variable becaouse calcAge have access to this
+    const self = this;
+    const isMillenial = function () {
+      // isMillenial can use self becaouse is in his scope
+      console.log(self); // Undefined
+      console.log(self.year >= 1981 && self.year <= 1996);
+    };
+    isMillenial();
   },
+  // Accesing windows.name variable
+  greet: () => console.log(`Hey ${this.name}`),
 };
-alberto.calcAge();
 
 const matilde = {
   year: 2017,
@@ -129,4 +142,40 @@ matilde.calcAge = alberto.calcAge;
 matilde.calcAge();
 
 const f = alberto.calcAge;
-f();
+// f();
+
+alberto.greet();
+alberto.calcAge();
+
+const leo = {
+  firstName: 'Leo',
+  year: 2020,
+  calcAge: function () {
+    console.log(2023 - this.year);
+
+    // In an arrow function the this keyword will be his parents scope, this = leo
+    const isMillenial = () => {
+      console.log(this);
+      console.log(this.year >= 1981 && this.year <= 1996);
+    };
+    isMillenial();
+  },
+};
+
+leo.calcAge();
+
+// Arguments keyword
+const addExpr = function (a, b) {
+  console.log(arguments);
+  return a + b;
+};
+
+var addArrow = (a, b) => {
+  console.log(arguments);
+  return a + b;
+};
+
+addExpr(2, 5);
+addExpr(2, 5, 8, 9);
+
+// addArrow(1, 2);
