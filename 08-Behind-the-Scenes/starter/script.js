@@ -1,5 +1,6 @@
 'use strict';
 
+// SCOPES, BLOCK - GLOBAL - LOCAL
 function calcAge(birthYear) {
   // Local scope
   const age = 2023 - birthYear;
@@ -47,3 +48,47 @@ const firstName = 'Alberto';
 calcAge(1984);
 // console.log(age);
 // printAge();
+
+// Hoisting and TDZ
+// Variables
+console.log(me);
+// console.log(job);
+// console.log(year);
+
+var me = 'Alberto';
+let job = 'unemployed';
+const year = 1984;
+
+// Functions
+console.log(addDecl(2, 3));
+// console.log(addExpr(2, 3));
+console.log(addArrow);
+// console.log(addArrow(2, 3));
+
+function addDecl(a, b) {
+  return a + b;
+}
+
+const addExpr = function (a, b) {
+  return a + b;
+};
+
+var addArrow = (a, b) => a + b;
+
+// Example
+console.log(numProducts);
+// Will show the message becaouse numProduct is a var so "undefined"
+if (!numProducts) deletShoppingCar();
+
+var numProducts = 10;
+function deletShoppingCar() {
+  console.log('All products deleted!');
+}
+
+var x = 1;
+let y = 2;
+const z = 3;
+
+console.log(x === window.x); // true
+console.log(y === window.y); // false
+console.log(z === window.z); // false
