@@ -179,3 +179,64 @@ addExpr(2, 5);
 addExpr(2, 5, 8, 9);
 
 // addArrow(1, 2);
+
+// Primitive vs Objet (Primitive vs reference)
+// let age = 38;
+// let oldAge = age;
+// age = 31;
+// console.log(age);
+// console.log(oldAge);
+
+// const meAgain = {
+//   name: 'Alberto',
+//   age: 30,
+// };
+
+// const friend = meAgain;
+// friend.age = 27;
+
+// console.log(friend.age);
+// console.log(meAgain.age);
+
+// Primitive types
+let lastName = 'Williams';
+let oldLastName = lastName;
+lastName = 'Davis';
+console.log(lastName, oldLastName);
+
+// Reference types
+const jessica = {
+  firstName: 'Jessica',
+  lastName: 'Williams',
+  age: '27',
+};
+// Copiying the REFERENCE to the object, not the object itself
+const marriedJessica = jessica;
+marriedJessica.lastName = 'Davis';
+// They both to de same memory address in the heap
+// Same values, if we change something in one it is changed in the other
+console.log('Before marriage: ', jessica);
+console.log('After marriage: ', marriedJessica);
+
+// Is a const so we CANT reasign
+// marriedJessica = {}
+
+// Copying objects
+const jessica2 = {
+  firstName: 'Jessica',
+  lastName: 'Williams',
+  age: '27',
+  family: ['Alice', 'Bob'],
+};
+
+// Dont create a deep copy
+const marriedJessica2 = Object.assign({}, jessica2);
+marriedJessica2.lastName = 'Davis';
+console.log('Before marriage: ', jessica2);
+console.log('After marriage: ', marriedJessica2);
+
+// Object.assign WONT copy family array, just point to his reference
+marriedJessica2.family.push('Mary');
+marriedJessica2.family.push('John');
+console.log('Before marriage: ', jessica2);
+console.log('After marriage: ', marriedJessica2);
