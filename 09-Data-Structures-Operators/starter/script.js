@@ -41,6 +41,10 @@ const restaurant = {
       `Order received! ${this.starterMenu[starterIndex]}, ${this.mainMenu[mainIndex]}, ${time}, ${address}`
     );
   },
+
+  orderPasta: function (ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2}, ${ing3}.`);
+  },
 };
 
 restaurant.orderDelivery({
@@ -119,3 +123,50 @@ console.log(i, j, k);
 // Default values
 const [p = 1, q = 1, r = 1] = [8, 9];
 console.log(p, q, r);
+
+// Spread operator
+const arr = [7, 8, 9];
+const badNewArr = [1, 2, arr[0], arr[1], arr[2]];
+console.log(badNewArr);
+
+const newArray = [1, 2, ...arr];
+console.log(newArray);
+
+console.log(...newArray);
+
+const newMenu = [...restaurant.mainMenu, 'Gnocci'];
+console.log(newMenu);
+
+// Uses: Copy array
+const mainMenuCopy = [...restaurant.mainMenu];
+console.log(mainMenuCopy);
+
+// Join 2 arrays
+const joinMenu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+console.log(joinMenu);
+
+// Iterables: arrays, strings, maps, sets. NOT objects
+const str = 'Alberto';
+const letters = [...str, ' ', 'S.'];
+console.log(letters);
+console.log(...str);
+// console.log(`${...str}`); // NONONO
+
+// Real-wordl example
+// const ingredients = [
+//   prompt("Let's make pasta! Ingrediente 1?: "),
+//   prompt("Let's make pasta! Ingrediente 2?: "),
+//   prompt("Let's make pasta! Ingrediente 3?: "),
+// ];
+// console.log(ingredients);
+
+restaurant.orderPasta(...ingredients);
+
+// Spread in objetes
+const newRestaurant = { foundedIn: 1998, ...restaurant, founder: 'Giuseppe' };
+console.log(newRestaurant);
+
+const restaurantCopy = { ...restaurant };
+restaurantCopy.name = 'Ristorante Roma';
+console.log(restaurantCopy.name);
+console.log(restaurant.name);
