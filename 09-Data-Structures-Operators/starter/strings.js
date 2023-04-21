@@ -28,3 +28,44 @@ const checkMiddleSeat = function (seat) {
 checkMiddleSeat('11B');
 checkMiddleSeat('23C');
 checkMiddleSeat('3E');
+
+// toLowerCase, toUpperCase
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
+
+// Fix capitalization in name
+const passenger = 'jOnAS';
+
+const capitalize = function (string) {
+  const stringLower = string.toLowerCase();
+  const stringCorrect = stringLower[0].toUpperCase() + stringLower.slice(1);
+  return stringCorrect;
+};
+console.log(capitalize(passenger));
+
+// Comparing emails TRIM quita espacios en blanco, saltos de linea, tabulaciones
+const email = 'hello@jonas.io';
+const loginEmail = '  Hello@Jonas.Io \n';
+const correctEmail = loginEmail.trim().toLowerCase();
+console.log(correctEmail);
+
+// Replacing
+const priceGB = '288,97€';
+const priceUS = priceGB.replace('€', '$').replace(',', '.');
+console.log(priceUS);
+
+const annuncement =
+  'All passengers come to boarding door 23. Boarding door 23!';
+console.log(annuncement.replaceAll('door', 'gate'));
+
+const checkBaggage = function (items) {
+  const forbidden = ['gun', 'knife'];
+  //   return items.includes(item);
+  for (const item of forbidden) {
+    return console.log(items.includes(item) ? true : false);
+  }
+};
+
+checkBaggage('I have a laptop, some food and a pocket knife');
+checkBaggage('Socks and camera');
+checkBaggage('Got some snacks and a gun for protection');
