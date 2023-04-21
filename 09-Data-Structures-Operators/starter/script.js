@@ -424,3 +424,26 @@ console.log([...question]);
 console.log(...question.entries());
 console.log(...question.keys());
 console.log(...question.values());
+
+/**
+ * SOURCES OF DATA
+ * From the program itself (Source Code)
+ * From the UI (DOM)
+ * From external sources (API)
+ * Simple list => Arrays or Sets
+ * Key/Value Pairs => Objects or Maps
+ */
+
+/**
+ * Arrays vs Sets
+ * Arrays => manipulate data not unique
+ * Sets => remove duplicate values from an array
+ */
+
+/**
+ * Objets vs Maps (key, value)
+ * Objects => Easier to write and acces values with . and []
+ * Maps => Better perfomance, keys with ANY data type, easy to iterate, easy to compute size
+ * Objets => FUNCTIONS, JSON
+ * Maps => WHen you need keys that are NOT strings
+ */
