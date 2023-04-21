@@ -64,31 +64,35 @@ const game = {
 };
 // 1. Loop over the game.scored array and print each player name to the console,
 // along with the goal number (Example: "Goal 1: Lewandowski")
+
 const scored = [...game.scored];
-for (const [number, player] of scored.entries()) {
-  console.log(`Goal ${number + 1}: ${player}`);
+
+for ([index, name] of scored.entries()) {
+  console.log(`Goal ${index}: ${name}`);
 }
 
 // 2. Use a loop to calculate the average odd and log it to the console (We already
 // studied how to calculate averages, you can go check if you don't remember)
-const oddsValues = Object.values(game.odds);
+
+const values = Object.values(game.odds);
+console.log(values);
 let acum = 0;
-for (const score of oddsValues) {
-  acum += score;
+for (const value of values) {
+  acum += value / values.length;
 }
-console.log((acum / oddsValues.length).toFixed(2));
+console.log(`Average odd: ${acum.toFixed(2)}`);
 
 // 3. Print the 3 odds to the console, but in a nice formatted way, exactly like this:
 // Odd of victory Bayern Munich: 1.33
 // Odd of draw: 3.25
 // Odd of victory Borrussia Dortmund: 6.5
 // Get the team names directly from the game object, don't hardcode them
-// (except for "draw"). +int: Note how the odds and the game objects have the
-// same property names �-
+// (except for "draw"). Hint: Note how the odds and the game objects have the
+// same property names �
 const odds = Object.entries(game.odds);
-for (const [team, score] of odds) {
-  const teamStr = game?.[team] ? 'victory' : '';
-  console.log(`Odd of ${teamStr} ${game?.[team] ?? 'draw'}: ${score}`);
+for ([name, value] of odds) {
+  const str = game[name] ? 'victory' : '';
+  console.log(`Odd of ${str} ${game[name] || 'draw'}: ${value}`);
 }
 
 // 4. Bonus: Create an object called 'scorers' which contains the names of the
@@ -99,8 +103,12 @@ for (const [team, score] of odds) {
 //  Hummels: 1,
 //  Lewandowski: 2
 // }
+
 const scorers = {};
-for (const player of game.scored) {
-  scorers[player] ? scorers[player]++ : (scorers[player] = 1);
+
+for (entry of game.scored) {
+  //   scorers[entry] += 1 ?? scorers[entry] = 1;
+  scorers[entry] ? scorers[entry]++ : (scorers[entry] = 1);
 }
+
 console.log(scorers);

@@ -242,9 +242,9 @@ console.log(users[1]?.name ?? 'User does not exist');
 // ];
 // console.log(pizza, risotto, otherFood);
 
-// // Objects
-// const { sat: saturday, ...restOpening } = { ...restaurant.openingHours };
-// console.log(saturday, restOpening);
+// Objects
+const { sat: saturday, ...restOpening } = { ...restaurant.openingHours };
+console.log(saturday, restOpening);
 
 // // FUNCTIONS
 // const add = function (...args) {
