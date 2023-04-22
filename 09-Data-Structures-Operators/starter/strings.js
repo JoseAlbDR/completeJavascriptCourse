@@ -1,3 +1,4 @@
+'use strict';
 const airline = 'TAP Air Portugal';
 const plane = 'A320';
 
@@ -69,3 +70,44 @@ const checkBaggage = function (items) {
 checkBaggage('I have a laptop, some food and a pocket knife');
 checkBaggage('Socks and camera');
 checkBaggage('Got some snacks and a gun for protection');
+
+const hideNumbers = function (number) {
+  const str = number + '';
+  const last = str.slice(-4);
+  console.log(last.padStart(str.length, '*'));
+};
+
+hideNumbers(4872548789603215);
+
+const message2 = 'Bad weather... All Departures Delayed...';
+console.log(message2.repeat(2));
+
+// Challenge 4
+document.body.append(document.createElement('textarea'));
+document.body.append(document.createElement('button'));
+
+const textArea = document.querySelector('textarea');
+const button = document.querySelector('button');
+const check = '✅';
+button.addEventListener('click', () => {
+  // Save the text area content
+  // Split with \n
+  const words = textArea.value.toLowerCase().split('\n');
+  // For each word, split with "_"
+  let i = 0;
+  words.forEach(word => {
+    i++;
+    // save first word in a variable
+    if (word.endsWith('_')) word = word.slice(0, -1);
+    if (word.indexOf('_') !== -1) {
+      const camelCase = word.split('_');
+      let camel = camelCase.shift().toLowerCase().trim();
+      for (const n of camelCase) {
+        camel += n.trim().replace(n[0], n[0].toUpperCase());
+        console.log(`${camel.padEnd(20)}${check.repeat(i)}`);
+      }
+    } else {
+      console.log('Cant convert word.');
+    }
+  });
+});
