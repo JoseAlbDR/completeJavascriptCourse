@@ -96,3 +96,52 @@ greeterHey('Alberto');
 greeterHey('Jonas');
 
 greet('Hello')('ALberto');
+
+// THIS keyword call apply
+const lufthansa = {
+  airline: 'Lufthansa',
+  iataCode: 'LH',
+  bookings: [],
+  book(fligthNum, name) {
+    console.log(
+      `${name} booked a seat on ${this.airline} flight ${this.iataCode}${fligthNum}.`
+    );
+    this.bookings.push({ flight: `${this.iataCode}${fligthNum}`, name });
+  },
+};
+
+lufthansa.book(239, 'Alberto Delgado');
+lufthansa.book(635, 'Mike Smith');
+console.log(lufthansa);
+
+const eurowings = {
+  name: 'Euriwings',
+  iataCode: 'EW',
+  bookings: [],
+  book: lufthansa.book,
+};
+
+const book = lufthansa.book;
+
+// book(23, 'Sarah Williams'); // Undefined because of this
+
+book.call(eurowings, 23, 'Sarah Williams');
+book.call(lufthansa, 23, 'Sarah Williams');
+eurowings.book(239, 'Alberto Delgado');
+console.log(eurowings);
+console.log(lufthansa);
+
+const swiss = {
+  name: 'Swiss Air Lines',
+  iataCode: 'EW',
+  bookings: [],
+};
+
+book.call(swiss, 77, 'Leo Delgado');
+console.log(swiss);
+
+// APPLY not used
+const flightData = [583, 'George Cooper'];
+book.apply(swiss, flightData);
+console.log(swiss);
+book.call(swiss, ...flightData);
