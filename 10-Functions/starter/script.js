@@ -78,7 +78,7 @@ transformer('JavaScript is the best!', oneWord);
 const high5 = function () {
   console.log('Hey');
 };
-document.body.addEventListener('click', high5);
+// document.body.addEventListener('click', high5);
 
 ['Alberto', 'Jonas', 'Marta'].forEach(high5);
 //
@@ -115,7 +115,7 @@ lufthansa.book(635, 'Mike Smith');
 console.log(lufthansa);
 
 const eurowings = {
-  name: 'Euriwings',
+  airline: 'Eurowings',
   iataCode: 'EW',
   bookings: [],
   book: lufthansa.book,
@@ -132,7 +132,7 @@ console.log(eurowings);
 console.log(lufthansa);
 
 const swiss = {
-  name: 'Swiss Air Lines',
+  airline: 'Swiss Air Lines',
   iataCode: 'EW',
   bookings: [],
 };
@@ -145,3 +145,32 @@ const flightData = [583, 'George Cooper'];
 book.apply(swiss, flightData);
 console.log(swiss);
 book.call(swiss, ...flightData);
+
+// BIND
+// Bind the this keyword
+const bookEW = book.bind(eurowings);
+const bookLH = book.bind(lufthansa);
+const bookLX = book.bind(swiss);
+
+bookEW(239, 'Steven Williams');
+const bookEW23 = book.bind(eurowings, 23);
+bookEW23('Pepe');
+
+// With Event Listeners
+lufthansa.planes = 300;
+lufthansa.buyPlane = function () {
+  console.log(this);
+  this.planes++;
+  console.log(this.planes);
+};
+const fn = lufthansa.buyPlane.bind(lufthansa);
+document.querySelector('.buy').addEventListener('click', fn);
+
+// Partial application
+const addTax = (rate, value) => value + value * rate;
+const addTax21 = addTax.bind(null, 0.21);
+console.log(addTax21(100));
+
+const addTaxb = rate => value => value + value * rate;
+const addTax23 = addTaxb(0.23);
+console.log(addTax23(100));
