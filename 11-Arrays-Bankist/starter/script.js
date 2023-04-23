@@ -104,7 +104,9 @@ createUsernames(accounts);
  * @param {*} movements
  * @returns the sum of all his movements
  */
-const calcDisplayBalance = movements =>
-  movements.reduce((acc, salary) => acc + salary, 0);
+const calcDisplayBalance = movements => {
+  const balance = movements.reduce((acc, salary) => acc + salary, 0);
+  return `${balance} EUR`;
+};
 
-labelBalance.textContent = `${calcDisplayBalance(account1.movements)} EUR`;
+labelBalance.textContent = calcDisplayBalance(account1.movements);
