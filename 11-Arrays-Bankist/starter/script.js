@@ -61,6 +61,10 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+/**
+ * Display the last movements of the current user
+ * @param {*} movements
+ */
 const displayMovements = function (movements) {
   containerMovements.innerHTML = '';
   movements.forEach(function (movement, i) {
@@ -76,19 +80,12 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-
 displayMovements(account1.movements);
 
-// const userInitials = accounts.map(account => {
-//   const owner = account.owner
-//     .toLowerCase()
-//     .split(' ')
-//     .map(name => name[0])
-//     .join('');
-
-//   return owner;
-// });
-
+/**
+ * Create the usernames for the accounts given the first letter of the name and last name of the user
+ * @param {*} accs
+ */
 const createUsernames = function (accs) {
   accs.forEach(acc => {
     acc.username = acc.owner
@@ -100,4 +97,14 @@ const createUsernames = function (accs) {
 };
 
 createUsernames(accounts);
-accounts.forEach(acc => console.log(acc.username));
+// accounts.forEach(acc => console.log(acc.username));
+
+/**
+ * Canculate the current balance of the user given his movements
+ * @param {*} movements
+ * @returns the sum of all his movements
+ */
+const calcDisplayBalance = movements =>
+  movements.reduce((acc, salary) => acc + salary, 0);
+
+labelBalance.textContent = `${calcDisplayBalance(account1.movements)} EUR`;

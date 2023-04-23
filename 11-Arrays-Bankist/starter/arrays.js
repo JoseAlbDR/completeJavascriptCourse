@@ -86,3 +86,17 @@ console.log(movements.filter(mov => mov > 0));
 
 const withdrawals = movements.filter(mov => mov < 0);
 console.log(withdrawals);
+
+// REDUCE
+const averageMov =
+  movements.reduce((acc, mov) => acc + mov, 0) / movements.length;
+const globalBalance = movements.reduce((acc, mov) => acc + mov, 0);
+console.log(averageMov);
+console.log(globalBalance / movements.length);
+
+// Maximun value
+const maximun = movements.reduce(
+  (acc, mov) => (acc = mov > acc ? mov : acc),
+  movements[0]
+);
+console.log(maximun);
