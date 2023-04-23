@@ -78,3 +78,26 @@ const displayMovements = function (movements) {
 };
 
 displayMovements(account1.movements);
+
+// const userInitials = accounts.map(account => {
+//   const owner = account.owner
+//     .toLowerCase()
+//     .split(' ')
+//     .map(name => name[0])
+//     .join('');
+
+//   return owner;
+// });
+
+const createUsernames = function (accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsernames(accounts);
+accounts.forEach(acc => console.log(acc.username));
