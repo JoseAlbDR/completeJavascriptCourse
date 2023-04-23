@@ -40,6 +40,7 @@ console.log('alberto'.at(-1));
 
 // FOREACH
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
 movements.forEach(move =>
   move > 0
     ? console.log(`You deposited ${move}`)
@@ -65,3 +66,17 @@ currencies.forEach((value, key, map) => console.log(`${key}: ${value}`));
 // FOREACH SET
 const currenciesUnique = new Set(['USD', 'GBP', 'USD', 'EUR', 'EUR']);
 currenciesUnique.forEach((value, _, set) => console.log(`${_}: ${value}`));
+
+// MAP METHOD
+const eurToUsd = 1.1;
+// const usdMovements = movements.map(function (move, i) {
+//   // return (move * eurToUsd).toFixed(2);
+//   return `Movement ${i} is ${move}`;
+// });
+
+const usdMovs = movements.map(move => (move * eurToUsd).toFixed(2));
+console.log(usdMovs);
+
+const movementUSDfor = [];
+for (const move of movements) movementUSDfor.push(move * eurToUsd);
+console.log(movementUSDfor);
