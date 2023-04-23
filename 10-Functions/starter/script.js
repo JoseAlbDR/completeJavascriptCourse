@@ -163,6 +163,7 @@ lufthansa.buyPlane = function () {
   this.planes++;
   console.log(this.planes);
 };
+// If you dont use a bind the this keyword wont point to lufthansa
 const fn = lufthansa.buyPlane.bind(lufthansa);
 document.querySelector('.buy').addEventListener('click', fn);
 
