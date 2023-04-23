@@ -3,12 +3,6 @@
 /////////////////////////////////////////////////
 // LECTURES
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
 /////////////////////////////////////////////////
 // SLICE
 let arr = ['a', 'b', 'c', 'd', 'e'];
@@ -58,3 +52,16 @@ movements.forEach((move, index, array) => {
       ? console.log(`Movement ${index}: you deposited ${move}`)
       : console.log(`Movement ${index}: you withdrew ${Math.abs(move)}`);
 });
+
+// FOREACH IN MAP
+const currencies = new Map([
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
+]);
+
+currencies.forEach((value, key, map) => console.log(`${key}: ${value}`));
+
+// FOREACH SET
+const currenciesUnique = new Set(['USD', 'GBP', 'USD', 'EUR', 'EUR']);
+currenciesUnique.forEach((value, _, set) => console.log(`${_}: ${value}`));
