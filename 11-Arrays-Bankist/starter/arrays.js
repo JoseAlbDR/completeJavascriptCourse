@@ -80,3 +80,9 @@ console.log(usdMovs);
 const movementUSDfor = [];
 for (const move of movements) movementUSDfor.push(move * eurToUsd);
 console.log(movementUSDfor);
+
+// FILTER
+console.log(movements.filter(mov => mov > 0));
+
+const withdrawals = movements.filter(mov => mov < 0);
+console.log(withdrawals);
