@@ -1,3 +1,127 @@
+// Array Methods Practice
+const account1 = {
+  owner: 'Jonas Schmedtmann',
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  interestRate: 1.2, // %
+  pin: 1111,
+  transferTo: {},
+  transferFrom: {},
+};
+
+const account2 = {
+  owner: 'Jessica Davis',
+  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  interestRate: 1.5,
+  pin: 2222,
+  transferTo: {},
+  transferFrom: {},
+};
+
+const account3 = {
+  owner: 'Steven Thomas Williams',
+  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  interestRate: 0.7,
+  pin: 3333,
+  transferTo: {},
+  transferFrom: {},
+};
+
+const account4 = {
+  owner: 'Sarah Smith',
+  movements: [430, 1000, 700, 50, 90],
+  interestRate: 1,
+  pin: 4444,
+  transferTo: {},
+  transferFrom: {},
+};
+
+const accounts = [account1, account2, account3, account4];
+
+// 1. SUM of all deposits
+const bankDepositSum = accounts
+  .flatMap(account => account.movements)
+  .filter(movement => movement > 0)
+  .reduce((acc, mov) => acc + mov, 0);
+
+console.log(bankDepositSum);
+
+// How many deposits have been in the bank with at least 100 dolars
+const deposit100 = accounts
+  .flatMap(account => account.movements)
+  //   .filter(mov => mov >= 1000)
+  .reduce((acc, value) => (value >= 1000 ? ++acc : acc), 0);
+
+console.log(deposit100);
+
+// IMPORTANT
+// Create a new object wich contains the sum of the deposits and the sum of the withdrawals
+const sums = accounts
+  .flatMap(account => account.movements)
+  .reduce(
+    (sums, curr) => {
+      //   curr > 0 ? (sums.deposits += curr) : (sums.withdrawals += curr);
+      sums[curr > 0 ? 'deposits' : 'withdrawals'] += curr;
+      return sums;
+    },
+    { deposits: 0, withdrawals: 0 }
+  );
+console.log(sums);
+
+// 4.
+// this is a nice title => This Is a Nice Title
+
+const convertTitle = 'this is a nice title'
+  .toLowerCase()
+  .split(' ')
+  .map(word => (word.length > 1 ? word[0].toUpperCase() + word.slice(1) : word))
+  .join(' ');
+
+const convertTitleReduce = function (title) {
+  // Array of exceptions
+  const exceptions = ['a', 'an', 'the', 'and', 'but', 'or', 'on', 'in', 'with'];
+
+  // Function to capitalize a given word
+  const capitalize = word => word[0].toUpperCase() + word.slice(1);
+  return title
+    .toLowerCase() // All words to lowerCase by default
+    .split(' ') // Conver to array with ' ' separator
+    .reduce((acc, word, index) => {
+      // If word IS NOT in the exceptions or the word IS the first
+      !exceptions.includes(word) || index === 0
+        ? (acc += capitalize(word) + ' ') // Capitalize the word and chain it
+        : (acc += word + ' '); // Chain the lowerCased word
+      return acc; // Return acc where the words are chaining
+    }, '')
+    .trimEnd(); // To remove the final space
+};
+
+console.log(convertTitle);
+console.log(convertTitleReduce(convertTitle));
+console.log(convertTitleReduce('this is a LONG title but not too long'));
+console.log(convertTitleReduce('and here is another title with an EXAMPLE'));
+
+const exceptions = ['a', 'an', 'the', 'and', 'but', 'or', 'on', 'in', 'with'];
+
+const title1 = 'and here is another title with an EXAMPLE';
+const title2 = 'this is a LONG title but not too long';
+
+const capitalizeTitle = title => {
+  return title.split(' ').reduce((result, word, index) => {
+    if (exceptions.includes(word) && index !== 0) {
+      result += word.toLowerCase();
+    } else {
+      result += word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
+    if (index !== title.split(' ').length - 1) {
+      result += ' ';
+    }
+    return result;
+  }, '');
+};
+
+console.log(capitalizeTitle(title1)); // "And Here Is Another Title with an Example"
+console.log(capitalizeTitle(title2)); // "This Is a Long Title but Not Too Long"
+
 // Your tasks:
 // 1. Loop over the 'dogs' array containing dog objects, and for each dog, calculate
 // the recommended food portion and add it to the object as a new property. Do

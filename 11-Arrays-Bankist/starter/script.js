@@ -5,23 +5,23 @@
 // BANKIST APP
 
 // Data
-const account5 = {
-  owner: 'Jose Alberto Delgado Robles',
-  movements: [2000, -450, -400, 2000, -450, -400, 200, 15000],
-  interestRate: 1.2, // %
-  pin: 2005,
-  transferTo: {},
-  transferFrom: {},
-};
+// const account5 = {
+//   owner: 'Jose Alberto Delgado Robles',
+//   movements: [2000, -450, -400, 2000, -450, -400, 200, 15000],
+//   interestRate: 1.2, // %
+//   pin: 2005,
+//   transferTo: {},
+//   transferFrom: {},
+// };
 
-const account6 = {
-  owner: 'Matilde Antelo Lopez',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
-  interestRate: 1.5,
-  pin: 2222,
-  transferTo: {},
-  transferFrom: {},
-};
+// const account6 = {
+//   owner: 'Matilde Antelo Lopez',
+//   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+//   interestRate: 1.5,
+//   pin: 2222,
+//   transferTo: {},
+//   transferFrom: {},
+// };
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
