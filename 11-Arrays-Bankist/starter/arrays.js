@@ -104,3 +104,32 @@ console.log(maximun);
 // FIND
 // Only returns the first one that match the condition
 const firstWithdrawal = movements.find(mov => mov < 0);
+
+// SOME value match the condition
+console.log(movements);
+
+//Equality
+console.log(movements.includes(-130));
+
+// Condition
+const anyDeposits = movements.some(mov => mov > 0);
+console.log(anyDeposits);
+
+// EVERY values match the condition
+console.log(movements.every(mov => mov > 0));
+
+// Separate callback
+const deposit = mov => mov > 0;
+console.log(movements.every(deposit));
+console.log(movements.some(deposit));
+console.log(movements.filter(deposit));
+
+// FLAT FLATMAP
+// Merge nested arrays
+const arr4 = [[1, 2, 3], [(4, 5, 6)], 7, 8];
+console.log(arr4.flat());
+
+const arr5 = [[[1, 2], 3], [[4, 5], 6], 7, 8];
+console.log(arr5.flat());
+// Deep or level of nested arrays
+console.log(arr5.flat(2));

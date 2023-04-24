@@ -147,11 +147,12 @@ const calcDisplaySummary = account => {
 
 // calcDisplaySummary(account1.movements);
 let currentAccount;
-const displayAll = acc => {
+const updateUI = acc => {
   displayMovements(acc.movements);
   calcDisplayBalance(acc);
   calcDisplaySummary(acc);
 };
+
 /**
  * Behaviour of login button
  */
@@ -179,7 +180,7 @@ btnLogin.addEventListener('click', function (event) {
     containerApp.style.opacity = 100;
 
     // Display all the data from the currentAccount
-    displayAll(currentAccount);
+    updateUI(currentAccount);
     // If not correct show an alert
   } else {
     alert('Incorrect User or Password.');
@@ -214,14 +215,83 @@ btnTransfer.addEventListener('click', event => {
     transferToAccount.movements.push(amount);
     currentAccount.transferTo[transferToAccount.username] = amount;
     transferToAccount.transferFrom[currentAccount.username] = amount;
-    console.log(currentAccount.transferTo);
-    console.log(transferToAccount.transferFrom);
   } else {
     alert('The account does not exist or the quantity is incorrect.');
     inputTransferTo.value = inputTransferAmount.value = '';
   }
 
   // Display changes in currentAccount and reset values
-  displayAll(currentAccount);
+  updateUI(currentAccount);
   inputTransferTo.value = inputTransferAmount.value = '';
 });
+
+/**
+ * Request loan funcionallity
+ */
+btnLoan.addEventListener('click', event => {
+  event.preventDefault();
+  const inputLoan = Number(inputLoanAmount.value);
+  if (
+    inputLoan > 0 &&
+    currentAccount.movements.some(amount => amount >= inputLoan * 0.1)
+  ) {
+    currentAccount.movements.push(inputLoan);
+    updateUI(currentAccount);
+  } else {
+    alert('Invalid amount.');
+    currentAccount.movements.push(inputLoan);
+  }
+  inputLoanAmount.value = '';
+});
+
+/**
+ * Detele one account
+ */
+btnClose.addEventListener('click', event => {
+  event.preventDefault();
+
+  // Variables
+  const closeUser = inputCloseUsername.value;
+  const closePin = Number(inputClosePin.value);
+
+  // If user and pin given are eaquals to the currentAccount
+  if (
+    closeUser === currentAccount.username &&
+    closePin === currentAccount.pin
+  ) {
+    // Find the account in the accounts array
+    const index = accounts.findIndex(
+      closeAccount => closeAccount.username === closeUser
+    );
+    // Alert the user
+    alert(accounts[index].owner + ' account deleted.');
+    // Delete the account from the accounts array
+    accounts.splice(index, 1);
+    // Hide UI
+    containerApp.style.opacity = 0;
+    // Show a message with incorrect data
+  } else {
+    alert('Incorrect username or pin.');
+    inputCloseUsername.value = inputClosePin.value = '';
+  }
+});
+
+// // Move the movements to one array
+// const accountMovements = accounts.map(acc => acc.movements);
+// // Merge all the movements
+// const allMovements = accountMovements.flat();
+// const overallBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
+
+// Flat
+const overalBalance = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov, 0);
+
+console.log(overalBalance);
+
+// FlatMap flat plus map in one go
+const overalBalance2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(overalBalance2);
