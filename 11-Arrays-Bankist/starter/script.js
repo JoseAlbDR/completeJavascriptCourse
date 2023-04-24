@@ -10,6 +10,8 @@ const account1 = {
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+  transferTo: {},
+  transferFrom: {},
 };
 
 const account2 = {
@@ -17,6 +19,8 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+  transferTo: {},
+  transferFrom: {},
 };
 
 const account3 = {
@@ -24,6 +28,8 @@ const account3 = {
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+  transferTo: {},
+  transferFrom: {},
 };
 
 const account4 = {
@@ -31,6 +37,8 @@ const account4 = {
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+  transferTo: {},
+  transferFrom: {},
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -66,6 +74,8 @@ const inputClosePin = document.querySelector('.form__input--pin');
  * @param {*} movements
  */
 const displayMovements = function (movements) {
+  // console.log(movements);
+
   containerMovements.innerHTML = '';
   movements.forEach(function (movement, i) {
     const movementType = movement > 0 ? 'deposit' : 'withdrawal';
@@ -73,14 +83,14 @@ const displayMovements = function (movements) {
     <div class="movements__row">
           <div class="movements__type movements__type--${movementType}">${
       i + 1
-    } ${movementType.toUpperCase}</div>
+    } ${movementType.toUpperCase()}</div>
           <div class="movements__value">${movement}€</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-displayMovements(account1.movements);
+// displayMovements(account1.movements);
 
 /**
  * Create the usernames for the accounts given the first letter of the name and last name of the user
@@ -104,32 +114,114 @@ createUsernames(accounts);
  * @param {*} movements
  * @returns the sum of all his movements
  */
-const calcDisplayBalance = movements => {
-  const balance = movements.reduce((acc, salary) => acc + salary, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance = account => {
+  account.balance = account.movements.reduce((acc, salary) => acc + salary, 0);
+  labelBalance.textContent = `${account.balance} EUR`;
 };
 
-calcDisplayBalance(account1.movements);
+// calcDisplayBalance(account1.movements);
 
-const calcDisplaySummary = movements => {
-  const incomes = movements
+const calcDisplaySummary = account => {
+  const incomes = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, inc) => acc + inc, 0);
   labelSumIn.textContent = `${incomes}€`;
 
-  const outcomes = movements
+  const outcomes = account.movements
     .filter(mov => mov < 0)
     .reduce((acc, inc) => acc + inc, 0);
   labelSumOut.textContent = `${Math.abs(outcomes)}€`;
 
-  const interest = movements
+  const interest = account.movements
     .filter(mov => mov > 0)
     .reduce(
-      (acc, dep) => ((dep * 1.2) / 100 > 1 ? acc + (dep * 1.2) / 100 : acc + 0),
+      (acc, dep) =>
+        (dep * 1.2) / 100 > 1
+          ? acc + (dep * account.interestRate) / 100
+          : acc + 0,
       0
     );
 
   labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
-calcDisplaySummary(account1.movements);
+// calcDisplaySummary(account1.movements);
+let currentAccount;
+const displayAll = acc => {
+  displayMovements(acc.movements);
+  calcDisplayBalance(acc);
+  calcDisplaySummary(acc);
+};
+/**
+ * Behaviour of login button
+ */
+btnLogin.addEventListener('click', function (event) {
+  // Prevent the reload behaviour in a form button
+  event.preventDefault();
+
+  // Get the username and pin from form
+  const username = inputLoginUsername.value;
+  const pin = Number(inputLoginPin.value);
+
+  // Clear fields
+  inputLoginUsername.value = inputLoginPin.value = '';
+
+  // Get the account that match with de username
+  currentAccount = accounts.find(acc => acc.username === username);
+  inputLoginPin.blur();
+
+  // Check if the pin is correct
+  if (currentAccount?.pin === pin) {
+    // Display UI and welcome message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }.`;
+    containerApp.style.opacity = 100;
+
+    // Display all the data from the currentAccount
+    displayAll(currentAccount);
+    // If not correct show an alert
+  } else {
+    alert('Incorrect User or Password.');
+  }
+});
+
+/**
+ * Transfer money from one account to another
+ */
+btnTransfer.addEventListener('click', event => {
+  // Prevent the reload behaviour in a form button
+  event.preventDefault();
+
+  // Save data from form
+  const transferTo = inputTransferTo.value;
+  const amount = Number(inputTransferAmount.value);
+  console.log(transferTo);
+
+  // Find the account to transfer to
+  const transferToAccount = accounts.find(
+    account => account.username === transferTo
+  );
+
+  // Process the tranfer if the transferToAccount exist, the amount is greater than 0 and the amount is lesser than the balance
+  if (
+    transferToAccount?.username &&
+    amount > 0 &&
+    amount < currentAccount.balance &&
+    transferToAccount.username !== currentAccount
+  ) {
+    currentAccount.movements.push(-amount);
+    transferToAccount.movements.push(amount);
+    currentAccount.transferTo[transferToAccount.username] = amount;
+    transferToAccount.transferFrom[currentAccount.username] = amount;
+    console.log(currentAccount.transferTo);
+    console.log(transferToAccount.transferFrom);
+  } else {
+    alert('The account does not exist or the quantity is incorrect.');
+    inputTransferTo.value = inputTransferAmount.value = '';
+  }
+
+  // Display changes in currentAccount and reset values
+  displayAll(currentAccount);
+  inputTransferTo.value = inputTransferAmount.value = '';
+});

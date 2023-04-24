@@ -100,3 +100,7 @@ const maximun = movements.reduce(
   movements[0]
 );
 console.log(maximun);
+
+// FIND
+// Only returns the first one that match the condition
+const firstWithdrawal = movements.find(mov => mov < 0);
