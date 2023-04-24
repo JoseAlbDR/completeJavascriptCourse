@@ -5,6 +5,24 @@
 // BANKIST APP
 
 // Data
+const account5 = {
+  owner: 'Jose Alberto Delgado Robles',
+  movements: [2000, -450, -400, 2000, -450, -400, 200, 15000],
+  interestRate: 1.2, // %
+  pin: 2005,
+  transferTo: {},
+  transferFrom: {},
+};
+
+const account6 = {
+  owner: 'Matilde Antelo Lopez',
+  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  interestRate: 1.5,
+  pin: 2222,
+  transferTo: {},
+  transferFrom: {},
+};
+
 const account1 = {
   owner: 'Jonas Schmedtmann',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
@@ -41,7 +59,7 @@ const account4 = {
   transferFrom: {},
 };
 
-const accounts = [account1, account2, account3, account4];
+const accounts = [account1, account2, account3, account4, account5, account6];
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -73,19 +91,25 @@ const inputClosePin = document.querySelector('.form__input--pin');
  * Display the last movements of the current user
  * @param {*} movements
  */
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sorted = false) {
   // console.log(movements);
 
   containerMovements.innerHTML = '';
-  movements.forEach(function (movement, i) {
+
+  const movs = sorted ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach(function (movement, i) {
     const movementType = movement > 0 ? 'deposit' : 'withdrawal';
     const html = `
-    <div class="movements__row">
+    
+    <a href="#" class="movements__row">
+    
           <div class="movements__type movements__type--${movementType}">${
       i + 1
     } ${movementType.toUpperCase()}</div>
           <div class="movements__value">${movement}€</div>
-        </div>
+         
+        </a>
+      
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -276,22 +300,32 @@ btnClose.addEventListener('click', event => {
   }
 });
 
+/**
+ * Button listener to sort or unsort movements
+ */
+let sort = false;
+btnSort.addEventListener('click', event => {
+  event.preventDefault();
+  displayMovements(currentAccount.movements, !sort);
+  sort = !sort;
+});
+
 // // Move the movements to one array
 // const accountMovements = accounts.map(acc => acc.movements);
 // // Merge all the movements
 // const allMovements = accountMovements.flat();
 // const overallBalance = allMovements.reduce((acc, mov) => acc + mov, 0);
 
-// Flat
-const overalBalance = accounts
-  .map(acc => acc.movements)
-  .flat()
-  .reduce((acc, mov) => acc + mov, 0);
+// // Flat
+// const overalBalance = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, mov) => acc + mov, 0);
 
-console.log(overalBalance);
+// console.log(overalBalance);
 
-// FlatMap flat plus map in one go
-const overalBalance2 = accounts
-  .flatMap(acc => acc.movements)
-  .reduce((acc, mov) => acc + mov, 0);
-console.log(overalBalance2);
+// // FlatMap flat plus map in one go
+// const overalBalance2 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(overalBalance2);

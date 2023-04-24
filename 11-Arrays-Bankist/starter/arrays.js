@@ -133,3 +133,22 @@ const arr5 = [[[1, 2], 3], [[4, 5], 6], 7, 8];
 console.log(arr5.flat());
 // Deep or level of nested arrays
 console.log(arr5.flat(2));
+
+//SORT
+// Strings
+const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+console.log(owners.sort());
+
+// Numbers
+console.log(movements);
+// console.log(movements.sort());
+
+// return < 0, A > B (keep order)
+// Return > 0, B, A (switch order)
+movements.sort((a, b) => {
+  return a > b ? -1 : 1;
+});
+
+movements.sort((a, b) => a - b); // Descending
+movements.sort((a, b) => b - a); // Ascending
+console.log(movements);
