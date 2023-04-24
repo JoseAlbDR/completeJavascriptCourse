@@ -329,3 +329,14 @@ btnSort.addEventListener('click', event => {
 //   .flatMap(acc => acc.movements)
 //   .reduce((acc, mov) => acc + mov, 0);
 // console.log(overalBalance2);
+
+// labelBalance.addEventListener('click', () => {
+//   const movementsUI = Array.from(
+//     document.querySelectorAll('.movements__value'),
+//     value => Number(value.textContent.replace('€', ''))
+//   );
+//   console.log(movementsUI);
+// });
+
+// ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ IMPORTANT !!!!!!!!!!!!!!!!
+// IMAGE IN DIRECTORY
