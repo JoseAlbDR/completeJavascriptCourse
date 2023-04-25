@@ -130,6 +130,10 @@ nav {
   overflow: scroll;
 }
 
+a.movements__row {
+  text-decoration: none;
+}
+
 .movements__row {
   padding: 2.25rem 4rem;
   display: flex;
