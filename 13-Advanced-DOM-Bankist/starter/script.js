@@ -46,42 +46,62 @@ const section1 = document.querySelector('#section--1');
 btnScrollTo.addEventListener('click', event => {
   // MODERM WAY SMOOOOOOOTH
   section1.scrollIntoView({ behavior: 'smooth' });
-
-  // // Coordinates
-  // const s1coords = section1.getBoundingClientRect();
-  // // console.log(s1coords);
-
-  // // SMOOOOOOTH SCROOOOOOLL
-  // window.scrollTo({
-  //   left: s1coords.left + window.scrollX,
-  //   top: s1coords.top + window.scrollY,
-  //   behavior: 'smooth',
-  // });
-
-  // window.scrollTo(s1coords.x, s1coords.y);
-
-  // // Target is btnScrollTo
-  // console.log(event.target.getBoundingClientRect());
-
-  // console.log('Current scroll (X/Y)', window.scrollX, window.scrollY);
-
-  // // Dimensions of the viewport
-  // console.log(
-  //   'height/width viewport',
-  //   document.documentElement.clientHeight,
-  //   document.documentElement.clientWidth
-  // );
-
-  // Scrolling
-  // The position s1coords.top is relative to the viewport
-  // If we are at the top s1coords.top is the distance to s1coords and window.scrollY is 0
-  // If we scroll down s1coords.top change, are less, so we have to add to its coordinates the current scroll
-  // s1coords.top + window.scrollY
-  //   window.scrollTo(
-  //     s1coords.left + window.scrollX,
-  //     s1coords.top + window.scrollY
-  //   );
 });
+
+// EVENTS
+// Mouseenter
+const h1 = document.querySelector('h1');
+
+// Need a named function to remove an event listener
+// Remove event listener
+// Once the mouse enter the h1 the first time it will remove the eventListener
+// And it wont pop alert anymore
+const alertH1 = function (event) {
+  alert('addEventListener: Great! You are reading the heading :D');
+
+  // h1.removeEventListener('mouseenter', alertH1);
+};
+h1.addEventListener('mouseenter', alertH1);
+
+// Remove the event listener after 3 seconds
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
+
+// EVENTS BUBBLING AND CAPTURING
+
+// // Coordinates
+// const s1coords = section1.getBoundingClientRect();
+// // console.log(s1coords);
+
+// // SMOOOOOOTH SCROOOOOOLL
+// window.scrollTo({
+//   left: s1coords.left + window.scrollX,
+//   top: s1coords.top + window.scrollY,
+//   behavior: 'smooth',
+// });
+
+// window.scrollTo(s1coords.x, s1coords.y);
+
+// // Target is btnScrollTo
+// console.log(event.target.getBoundingClientRect());
+
+// console.log('Current scroll (X/Y)', window.scrollX, window.scrollY);
+
+// // Dimensions of the viewport
+// console.log(
+//   'height/width viewport',
+//   document.documentElement.clientHeight,
+//   document.documentElement.clientWidth
+// );
+
+// Scrolling
+// The position s1coords.top is relative to the viewport
+// If we are at the top s1coords.top is the distance to s1coords and window.scrollY is 0
+// If we scroll down s1coords.top change, are less, so we have to add to its coordinates the current scroll
+// s1coords.top + window.scrollY
+//   window.scrollTo(
+//     s1coords.left + window.scrollX,
+//     s1coords.top + window.scrollY
+//   );
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
