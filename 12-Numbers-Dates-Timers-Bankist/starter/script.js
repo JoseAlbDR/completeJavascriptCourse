@@ -12,6 +12,7 @@
 const account1 = {
   owner: 'Jonas Schmedtmann',
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+
   interestRate: 1.2, // %
   pin: 1111,
   transferFrom: {},
@@ -91,7 +92,8 @@ const calcDaysPassed = (date1, date2) =>
 
 // Get date
 
-const formatMovementDate = date => {
+// Date format to LOCALE
+const formatMovementDate = (date, locale) => {
   // Format Date String
   const daysPassed = calcDaysPassed(date, new Date());
 
@@ -99,13 +101,45 @@ const formatMovementDate = date => {
   if (daysPassed >= 1 && daysPassed < 2) return `yesterday`;
   if (daysPassed >= 2 && daysPassed <= 4) return `${daysPassed} days ago`;
 
-  const day = `${date.getDate()}`.padStart(2, 0);
-  const month = `${date.getMonth() + 1}`.padStart(2, 0);
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  // const day = `${date.getDate()}`.padStart(2, 0);
+  // const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  // const year = date.getFullYear();
+  // return `${day}/${month}/${year}`;
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+  };
+  return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
-// Displays all the movements
+/**
+ * Format number into locale string and currency
+ * @param {*} locale
+ * @param {*} number
+ * @param {*} currency
+ * @returns
+ */
+const formatCurrency = (locale, value, currency) => {
+  const options = {
+    // style: 'unit',
+    // style: 'percent',
+    style: 'currency',
+    // unit: 'mile-per-hour',
+    // unit: 'celsius',
+    currency: currency,
+    // useGrouping: false,
+  };
+  return new Intl.NumberFormat(locale, options).format(value);
+};
+
+/**
+ * Displays all the movements
+ * @param {*} acc
+ * @param {*} sorted
+ */
 const displayMovements = function (acc, sorted = false) {
   // console.log(movements);
   containerMovements.innerHTML = '';
@@ -115,20 +149,25 @@ const displayMovements = function (acc, sorted = false) {
     ? acc.movements.slice().sort((a, b) => a - b)
     : acc.movements;
 
-  const movsDate = acc.movementsDates
-    .slice()
-    .map(dates => new Date(dates))
-    .sort((a, b) => +a - +b);
-  // console.log(movsDate);
+  const calcDaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  const movsDate = sorted
+    ? acc.movementsDates
+        .slice()
+        .sort((a, b) => (new Date(b) - new Date(a)) / (1000 * 60 * 60 * 24))
+    : acc.movementsDates;
+
+  console.log(movsDate);
 
   // Check if deposit of withdrawal
   movs.forEach(function (movement, i) {
     const movementType = movement > 0 ? 'deposit' : 'withdrawal';
-    const date = new Date(acc.movementsDates[i]);
+    const date = new Date(movsDate[i]);
 
     // console.log(daysPassed);
 
-    const displayDate = formatMovementDate(date);
+    const displayDate = formatMovementDate(date, currentAccount.locale);
 
     // Add the movement
     const html = `
@@ -137,7 +176,11 @@ const displayMovements = function (acc, sorted = false) {
       i + 1
     } ${movementType.toUpperCase()}</div>
       <div class="movements__date">${displayDate}</div>
-      <div class="movements__value">${movement.toFixed(2)}€</div>
+      <div class="movements__value">${formatCurrency(
+        acc.locale,
+        movement.toFixed(2),
+        acc.currency
+      )}</div>
          
     </div> `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -168,21 +211,35 @@ createUsernames(accounts);
  */
 const calcDisplayBalance = account => {
   account.balance = account.movements.reduce((acc, salary) => acc + salary, 0);
-  labelBalance.textContent = `${account.balance.toFixed(2)} EUR`;
+  labelBalance.textContent = `${formatCurrency(
+    account.locale,
+    account.balance,
+    account.currency
+  )}`;
 };
 
-// calcDisplayBalance(account1.movements);
-
+/**
+ * Display summary for account
+ * @param {*} account
+ */
 const calcDisplaySummary = account => {
   const incomes = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, inc) => acc + inc, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = `${formatCurrency(
+    account.locale,
+    incomes,
+    account.currency
+  )}`;
 
   const outcomes = account.movements
     .filter(mov => mov < 0)
     .reduce((acc, inc) => acc + inc, 0);
-  labelSumOut.textContent = `${Math.abs(outcomes.toFixed(2))}€`;
+  labelSumOut.textContent = `${formatCurrency(
+    account.locale,
+    Math.abs(outcomes),
+    account.currency
+  )}`;
 
   const interest = account.movements
     .filter(mov => mov > 0)
@@ -194,10 +251,17 @@ const calcDisplaySummary = account => {
       0
     );
 
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = `${formatCurrency(
+    account.locale,
+    interest,
+    account.currency
+  )}`;
 };
 
-// calcDisplaySummary(account1.movements);
+/**
+ * Update the UI for acc
+ * @param {*} acc
+ */
 
 const updateUI = acc => {
   displayMovements(acc);
@@ -214,6 +278,12 @@ let currentAccount;
 // containerApp.style.opacity = 100;
 
 // Experimenting API display INTL date getting from browser
+/**
+ * Format date to acc locale
+ * @param {*} date
+ * @param {*} locale
+ * @returns
+ */
 const formatIntlDate = (date, locale) => {
   const options = {
     hour: 'numeric',
@@ -228,7 +298,7 @@ const formatIntlDate = (date, locale) => {
 };
 
 /**
- * Behaviour of login button
+ * LOGIN
  */
 btnLogin.addEventListener('click', function (event) {
   // Prevent the reload behaviour in a form button
@@ -267,6 +337,7 @@ btnLogin.addEventListener('click', function (event) {
   }
 });
 
+// LOAN
 /**
  * Transfer money from one account to another
  */
@@ -291,23 +362,26 @@ btnTransfer.addEventListener('click', event => {
     amount < currentAccount.balance &&
     transferToAccount.username !== currentAccount
   ) {
-    // Doing the transfer
-    currentAccount.movements.push(-amount);
-    currentAccount.movementsDates.push(new Date());
+    setTimeout(() => {
+      // Doing the transfer
+      currentAccount.movements.push(-amount);
+      currentAccount.movementsDates.push(new Date());
 
-    // Add transfer date
-    transferToAccount.movements.push(amount);
-    currentAccount.movementsDates.push(new Date());
+      // Add transfer date
+      transferToAccount.movements.push(amount);
+      currentAccount.movementsDates.push(new Date());
 
-    currentAccount.transferTo[transferToAccount.username] = amount;
-    transferToAccount.transferFrom[currentAccount.username] = amount;
+      currentAccount.transferTo[transferToAccount.username] = amount;
+      transferToAccount.transferFrom[currentAccount.username] = amount;
+      updateUI(currentAccount);
+    }, 3000);
   } else {
     alert('The account does not exist or the quantity is incorrect.');
     inputTransferTo.value = inputTransferAmount.value = '';
   }
 
   // Display changes in currentAccount and reset values
-  updateUI(currentAccount);
+
   inputTransferTo.value = inputTransferAmount.value = '';
 });
 
@@ -321,14 +395,16 @@ btnLoan.addEventListener('click', event => {
     inputLoan > 0 &&
     currentAccount.movements.some(amount => amount >= inputLoan * 0.1)
   ) {
-    // Add movement
-    currentAccount.movements.push(inputLoan);
+    setTimeout(() => {
+      // Add movement
+      currentAccount.movements.push(inputLoan);
 
-    // Add loan date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 3000);
   } else {
     alert('Invalid amount.');
   }
@@ -515,9 +591,47 @@ btnSort.addEventListener('click', event => {
 // future.setFullYear(2040);
 // console.log(future);
 
-// Operations with Dates
-const future = new Date(2037, 10, 19, 16, 23);
-// console.log(+future);
+// // Operations with Dates
+// const future = new Date(2037, 10, 19, 16, 23);
+// // console.log(+future);
 
-const days1 = calcDaysPassed(new Date(2023, 3, 27), new Date(2023, 3, 28));
-// console.log(days1);
+// const days1 = calcDaysPassed(new Date(2023, 3, 27), new Date(2023, 3, 28));
+// // console.log(days1);
+
+// const num = 38812398.123;
+
+// const options = {
+//   // style: 'unit',
+//   // style: 'percent',
+//   style: 'currency',
+//   // unit: 'mile-per-hour',
+//   // unit: 'celsius',
+//   currency: 'EUR',
+// };
+
+// console.log(`US: `, new Intl.NumberFormat('en-US', options).format(num));
+// console.log(`Germany: `, new Intl.NumberFormat('de-DE', options).format(num));
+// console.log(`Syria: `, new Intl.NumberFormat('er-SY', options).format(num));
+// console.log(
+//   `Local: `,
+//   new Intl.NumberFormat(navigator.languaje, options).format(num)
+// );
+
+// setTimeout and setInterval
+// ing1 = "olives"
+// ing2 = "spinach"
+
+const ingredients = ['olives', ''];
+
+// Calling the timeout
+const pizzaTimer = setTimeout(
+  (ing1, ing2) => console.log(`Here is your pizza with ${ing1} and ${ing2}`),
+  3000,
+  ...ingredients
+);
+
+// Waiting message
+console.log('Waiting...');
+
+// To clear the 3000ms timeout b4 it ends
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
