@@ -109,7 +109,26 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const calcDaysPassed = (date1, date2) =>
   Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
-// Get date
+// TIMER OUT
+const timerOut = () => {
+  const tick = () => {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min}:${sec}`;
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+  let time = 300;
+
+  // Call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
 
 // Date format to LOCALE
 const formatMovementDate = (date, locale) => {
@@ -283,7 +302,7 @@ const updateUI = acc => {
 };
 
 // EVENT HANDLERS
-let currentAccount;
+let currentAccount, timer;
 
 // FAKE ALWAYS LOGGED IN
 // currentAccount = account1;
@@ -330,21 +349,21 @@ btnLogin.addEventListener('click', function (event) {
 
   // Check if the pin is correct
   if (currentAccount?.pin === pin) {
+    // Logout timer
+    if (timer) clearInterval(timer);
+    timer = timerOut();
     // Display UI and welcome message
+    updateUI(currentAccount);
+    // If not correct show an alert
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
     }.`;
     containerApp.style.opacity = 100;
-
     // Get current date
     const now = new Date();
-
     // Format and show current date string
     labelDate.textContent = formatIntlDate(now, currentAccount.locale);
-
     // Display all the data from the currentAccount
-    updateUI(currentAccount);
-    // If not correct show an alert
   } else {
     alert('Incorrect User or Password.');
   }
@@ -357,7 +376,8 @@ btnLogin.addEventListener('click', function (event) {
 btnTransfer.addEventListener('click', event => {
   // Prevent the reload behaviour in a form button
   event.preventDefault();
-
+  if (timer) clearInterval(timer);
+  timer = timerOut();
   // Save data from form
   const transferTo = inputTransferTo.value;
   const amount = +inputTransferAmount.value;
@@ -403,6 +423,8 @@ btnTransfer.addEventListener('click', event => {
  */
 btnLoan.addEventListener('click', event => {
   event.preventDefault();
+  if (timer) clearInterval(timer);
+  timer = timerOut();
   const inputLoan = Math.floor(inputLoanAmount.value);
   if (
     inputLoan > 0 &&
@@ -429,7 +451,8 @@ btnLoan.addEventListener('click', event => {
  */
 btnClose.addEventListener('click', event => {
   event.preventDefault();
-
+  if (timer) clearInterval(timer);
+  timer = timerOut();
   // Variables
   const closeUser = inputCloseUsername.value;
   const closePin = +inputClosePin.value;
@@ -630,21 +653,64 @@ btnSort.addEventListener('click', event => {
 //   new Intl.NumberFormat(navigator.languaje, options).format(num)
 // );
 
-// setTimeout and setInterval
+// SETTIMEOUT
 // ing1 = "olives"
 // ing2 = "spinach"
 
-const ingredients = ['olives', ''];
+// const ingredients = ['olives', ''];
 
-// Calling the timeout
-const pizzaTimer = setTimeout(
-  (ing1, ing2) => console.log(`Here is your pizza with ${ing1} and ${ing2}`),
-  3000,
-  ...ingredients
-);
+// // Calling the timeout
+// const pizzaTimer = setTimeout(
+//   (ing1, ing2) => console.log(`Here is your pizza with ${ing1} and ${ing2}`),
+//   3000,
+//   ...ingredients
+// );
 
-// Waiting message
-console.log('Waiting...');
+// // Waiting message
+// console.log('Waiting...');
 
-// To clear the 3000ms timeout b4 it ends
-if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+// // To clear the 3000ms timeout b4 it ends
+// if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+// //SETINTERVAL
+// setInterval(() => {
+//   const now = new Date();
+//   const options = {
+//     hour: 'numeric',
+//     minute: 'numeric',
+//     second: 'numeric',
+//   };
+//   console.log(Intl.DateTimeFormat(navigator.languaje, options).format(now));
+// }, 1000);
+
+/**
+ * Set a countdown timer with format mm:ss given the seconds
+ * @param {*} seconds
+ */
+// function timer(seconds) {
+//   let time = seconds;
+//   const timer = setInterval(() => {
+//     // Divide the seconds by 60 to get the minutes
+//     // Trunc with math to get only an integer
+//     // Add a padStart of 2 filling with 0s the empty space
+//     const min = String(Math.trunc(time / 60)).padStart(2, 0);
+//     // Get the remainder using %
+//     // Add a padStart of 2 filling with 0s like the minutes
+//     const sec = String(time % 60).padStart(2, 0);
+//     // Format the string
+//     console.log(`${min}:${sec}`);
+//     // Decrease 1 second
+//     time--;
+//     // Stop countdown
+//     if (time === 0) clearInterval(timer);
+//     // Set interval to 1000ms
+//   }, 1000);
+// }
+
+// // Define any timer you want by calling the timer function with the seconds
+// // 5 minutes
+// const timer5 = timer(300);
+// // 1 minute
+// const timer1 = timer(60);
+// timer5;
+// timer1;
