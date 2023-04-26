@@ -11,7 +11,6 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  // movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   movements: [
     { value: 200, date: '2019-11-18T21:31:17.178Z' },
     { value: 455.23, date: '2019-12-23T07:42:02.383Z' },
@@ -24,26 +23,12 @@ const account1 = {
   ],
   interestRate: 1.2, // %
   pin: 1111,
-  transferFrom: {},
-  transferTo: {},
-
-  // movementsDates: [
-  //   '2019-11-18T21:31:17.178Z',
-  //   '2019-12-23T07:42:02.383Z',
-  //   '2020-01-28T09:15:04.904Z',
-  //   '2020-04-01T10:17:24.185Z',
-  //   '2023-04-29T14:11:59.604Z',
-  //   '2023-04-28T17:01:17.194Z',
-  //   '2023-04-27T09:17:17.929Z',
-  //   '2023-04-26T10:51:36.790Z',
-  // ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
 };
 
 const account2 = {
   owner: 'Jessica Davis',
-  // movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   movements: [
     { value: 5000, date: '2019-11-01T13:15:33.035Z' },
     { value: 3400, date: '2019-11-30T09:48:16.867Z' },
@@ -56,19 +41,6 @@ const account2 = {
   ],
   interestRate: 1.5,
   pin: 2222,
-  transferFrom: {},
-  transferTo: {},
-
-  // movementsDates: [
-  //   '2019-11-01T13:15:33.035Z',
-  //   '2019-11-30T09:48:16.867Z',
-  //   '2019-12-25T06:04:23.907Z',
-  //   '2020-01-25T14:18:46.235Z',
-  //   '2020-02-05T16:33:06.386Z',
-  //   '2020-04-10T14:43:26.374Z',
-  //   '2020-06-25T18:49:59.371Z',
-  //   '2023-04-27T12:01:20.894Z',
-  // ],
   currency: 'USD',
   locale: 'en-US',
 };
@@ -105,32 +77,14 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-// Days passes between 2 dates
-const calcDaysPassed = (date1, date2) =>
-  Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
-
-// TIMER OUT
-const timerOut = () => {
-  const tick = () => {
-    const min = String(Math.trunc(time / 60)).padStart(2, 0);
-    const sec = String(time % 60).padStart(2, 0);
-    labelTimer.textContent = `${min}:${sec}`;
-    if (time === 0) {
-      clearInterval(timer);
-      labelWelcome.textContent = 'Log in to get started';
-      containerApp.style.opacity = 0;
-    }
-    time--;
-  };
-  let time = 300;
-
-  // Call the timer every second
-  tick();
-  const timer = setInterval(tick, 1000);
-  return timer;
-};
-
-// Date format to LOCALE
+////////////////////////////////////////////////
+// FORMATERS
+/**
+ * Format the date shown in the movements
+ * @param {*} date
+ * @param {*} locale
+ * @returns
+ */
 const formatMovementDate = (date, locale) => {
   // Format Date String
   const daysPassed = calcDaysPassed(date, new Date());
@@ -174,143 +128,6 @@ const formatCurrency = (locale, value, currency) => {
 };
 
 /**
- * Displays all the movements
- * @param {*} acc
- * @param {*} sorted
- */
-const displayMovements = function (acc, sorted = false) {
-  // console.log(movements);
-  containerMovements.innerHTML = '';
-
-  // sort movements
-  const movs = sorted
-    ? acc.movements.slice().sort((a, b) => a.value - b.value)
-    : acc.movements;
-
-  console.log(movs);
-
-  // Check if deposit of withdrawal
-  movs.forEach(function (movement, i) {
-    const movementType = movement.value > 0 ? 'deposit' : 'withdrawal';
-    const date = new Date(movement.date);
-
-    // console.log(daysPassed);
-
-    const displayDate = formatMovementDate(date, currentAccount.locale);
-
-    // Add the movement
-    const html = `
-    <div class="movements__row">
-      <div class="movements__type movements__type--${movementType}">${
-      i + 1
-    } ${movementType.toUpperCase()}</div>
-      <div class="movements__date">${displayDate}</div>
-      <div class="movements__value">${formatCurrency(
-        acc.locale,
-        movement.value.toFixed(2),
-        acc.currency
-      )}</div>
-         
-    </div> `;
-    containerMovements.insertAdjacentHTML('afterbegin', html);
-  });
-};
-
-/**
- * Create the usernames for the accounts given the first letter of the name and last name of the user
- * @param {*} accs
- */
-const createUsernames = function (accs) {
-  accs.forEach(acc => {
-    acc.username = acc.owner
-      .toLowerCase()
-      .split(' ')
-      .map(name => name[0])
-      .join('');
-  });
-};
-
-createUsernames(accounts);
-// accounts.forEach(acc => console.log(acc.username));
-
-/**
- * Canculate the current balance of the user given his movements
- * @param {*} movements
- * @returns the sum of all his movements
- */
-const calcDisplayBalance = account => {
-  account.balance = account.movements.reduce(
-    (acc, salary) => acc + salary.value,
-    0
-  );
-  labelBalance.textContent = `${formatCurrency(
-    account.locale,
-    account.balance,
-    account.currency
-  )}`;
-};
-
-/**
- * Display summary for account
- * @param {*} account
- */
-const calcDisplaySummary = account => {
-  const incomes = account.movements
-    .filter(mov => mov.value > 0)
-    .reduce((acc, inc) => acc + inc.value, 0);
-  labelSumIn.textContent = `${formatCurrency(
-    account.locale,
-    incomes,
-    account.currency
-  )}`;
-
-  const outcomes = account.movements
-    .filter(mov => mov.value < 0)
-    .reduce((acc, inc) => acc + inc.value, 0);
-  labelSumOut.textContent = `${formatCurrency(
-    account.locale,
-    Math.abs(outcomes),
-    account.currency
-  )}`;
-
-  const interest = account.movements
-    .filter(mov => mov.value > 0)
-    .reduce(
-      (acc, dep) =>
-        (dep.value * 1.2) / 100 > 1
-          ? acc + (dep.value * account.interestRate) / 100
-          : acc + 0,
-      0
-    );
-
-  labelSumInterest.textContent = `${formatCurrency(
-    account.locale,
-    interest,
-    account.currency
-  )}`;
-};
-
-/**
- * Update the UI for acc
- * @param {*} acc
- */
-
-const updateUI = acc => {
-  displayMovements(acc);
-  calcDisplayBalance(acc);
-  calcDisplaySummary(acc);
-};
-
-// EVENT HANDLERS
-let currentAccount, timer;
-
-// FAKE ALWAYS LOGGED IN
-// currentAccount = account1;
-// updateUI(currentAccount);
-// containerApp.style.opacity = 100;
-
-// Experimenting API display INTL date getting from browser
-/**
  * Format date to acc locale
  * @param {*} date
  * @param {*} locale
@@ -329,8 +146,181 @@ const formatIntlDate = (date, locale) => {
   return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
+////////////////////////////////////////////////////////////////
+// UTILITIES
+
 /**
- * LOGIN
+ * Calculates the days passed between 2 different dates
+ * @param {*} date1
+ * @param {*} date2
+ * @returns
+ */
+const calcDaysPassed = (date1, date2) =>
+  Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+/**
+ * Create the usernames for the accounts given the first letter of the name and last name of the user
+ * @param {*} accs
+ */
+const createUsernames = function (accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsernames(accounts);
+
+/////////////////////////////////////////////////////////////////
+// TIMER
+/**
+ * Creates a logout timer with time = x seconds
+ * @returns timer = setInterval()
+ */
+const timerOut = () => {
+  const tick = () => {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min}:${sec}`;
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+  let time = 300;
+
+  // Call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
+///////////////////////////////////////////////////////////////////////
+// DISPLAYS
+
+// MOVEMENTS
+/**
+ * Displays all the movements
+ * @param {*} acc
+ * @param {*} sorted
+ */
+const displayMovements = function (acc, sorted = false) {
+  // Erase previous movements
+  containerMovements.innerHTML = '';
+
+  // Sort movements
+  const movs = sorted
+    ? acc.movements.slice().sort((a, b) => a.value - b.value)
+    : acc.movements;
+
+  // Check if deposit of withdrawal
+  movs.forEach(function (movement, i) {
+    const movementType = movement.value > 0 ? 'deposit' : 'withdrawal';
+    const date = new Date(movement.date);
+    const displayDate = formatMovementDate(date, currentAccount.locale);
+
+    // Add the movement
+    const html = `
+    <div class="movements__row">
+      <div class="movements__type movements__type--${movementType}">
+      ${i + 1} ${movementType.toUpperCase()}
+      </div>
+      <div class="movements__date">
+        ${displayDate}
+      </div>
+      <div class="movements__value">
+      ${formatCurrency(acc.locale, movement.value.toFixed(2), acc.currency)}
+      </div>
+    </div> `;
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
+
+// SUMMARY
+/**
+ * Display summary for account
+ * @param {*} account
+ */
+const calcDisplaySummary = account => {
+  // Add every movement > 0
+  const incomes = account.movements
+    .filter(mov => mov.value > 0)
+    .reduce((acc, inc) => acc + inc.value, 0);
+  // Show incomes
+  labelSumIn.textContent = `${formatCurrency(
+    account.locale,
+    incomes,
+    account.currency
+  )}`;
+
+  // Add every movement < 0
+  const outcomes = account.movements
+    .filter(mov => mov.value < 0)
+    .reduce((acc, inc) => acc + inc.value, 0);
+  // Show outcomes
+  labelSumOut.textContent = `${formatCurrency(
+    account.locale,
+    Math.abs(outcomes),
+    account.currency
+  )}`;
+
+  // Calculate the interest based on incomes and interest rate
+  const interest = account.movements
+    .filter(mov => mov.value > 0)
+    .reduce(
+      (acc, dep) =>
+        (dep.value * 1.2) / 100 > 1
+          ? acc + (dep.value * account.interestRate) / 100
+          : acc + 0,
+      0
+    );
+  // Show the interest earned
+  labelSumInterest.textContent = `${formatCurrency(
+    account.locale,
+    interest,
+    account.currency
+  )}`;
+};
+
+// CURRENT BALANCE
+/**
+ * Canculate the current balance of the user given his movements
+ * @param {*} movements
+ * @returns the sum of all his movements
+ */
+const calcDisplayBalance = account => {
+  account.balance = account.movements.reduce(
+    (acc, salary) => acc + salary.value,
+    0
+  );
+  labelBalance.textContent = `${formatCurrency(
+    account.locale,
+    account.balance,
+    account.currency
+  )}`;
+};
+// UI
+/**
+ * Update the UI for acc
+ * @param {*} acc
+ */
+const updateUI = acc => {
+  displayMovements(acc);
+  calcDisplayBalance(acc);
+  calcDisplaySummary(acc);
+};
+
+/////////////////////////////////////////////////////////////////////
+// EVENT HANDLERS
+let currentAccount, timer;
+
+/**
+ * LOGIN button click event handler
  */
 btnLogin.addEventListener('click', function (event) {
   // Prevent the reload behaviour in a form button
@@ -369,7 +359,7 @@ btnLogin.addEventListener('click', function (event) {
   }
 });
 
-// LOAN
+// TRANSFER button click event handler
 /**
  * Transfer money from one account to another
  */
@@ -404,8 +394,6 @@ btnTransfer.addEventListener('click', event => {
       transferToAccount.movements.push(amount);
       currentAccount.movementsDates.push(new Date());
 
-      currentAccount.transferTo[transferToAccount.username] = amount;
-      transferToAccount.transferFrom[currentAccount.username] = amount;
       updateUI(currentAccount);
     }, 3000);
   } else {
@@ -414,12 +402,12 @@ btnTransfer.addEventListener('click', event => {
   }
 
   // Display changes in currentAccount and reset values
-
   inputTransferTo.value = inputTransferAmount.value = '';
 });
 
+// LOAN
 /**
- * Request loan funcionallity
+ * Request loan button event handler
  */
 btnLoan.addEventListener('click', event => {
   event.preventDefault();
@@ -446,8 +434,9 @@ btnLoan.addEventListener('click', event => {
   inputLoanAmount.value = '';
 });
 
+// DELETE ACCOUNT
 /**
- * Detele one account
+ * Close account button event handler
  */
 btnClose.addEventListener('click', event => {
   event.preventDefault();
@@ -479,6 +468,7 @@ btnClose.addEventListener('click', event => {
   }
 });
 
+// SORT
 /**
  * Button listener to sort or unsort movements
  */
@@ -487,6 +477,8 @@ btnSort.addEventListener('click', event => {
   event.preventDefault();
   displayMovements(currentAccount, !sort);
   sort = !sort;
+  clearInterval(timer);
+  timer = timerOut();
 });
 
 /////////////////////////////////////////////////
