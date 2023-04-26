@@ -34,6 +34,55 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/// SMOOTH SCROLL
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+// EVENT LISTENERS
+
+btnScrollTo.addEventListener('click', event => {
+  // MODERM WAY SMOOOOOOOTH
+  section1.scrollIntoView({ behavior: 'smooth' });
+
+  // // Coordinates
+  // const s1coords = section1.getBoundingClientRect();
+  // // console.log(s1coords);
+
+  // // SMOOOOOOTH SCROOOOOOLL
+  // window.scrollTo({
+  //   left: s1coords.left + window.scrollX,
+  //   top: s1coords.top + window.scrollY,
+  //   behavior: 'smooth',
+  // });
+
+  // window.scrollTo(s1coords.x, s1coords.y);
+
+  // // Target is btnScrollTo
+  // console.log(event.target.getBoundingClientRect());
+
+  // console.log('Current scroll (X/Y)', window.scrollX, window.scrollY);
+
+  // // Dimensions of the viewport
+  // console.log(
+  //   'height/width viewport',
+  //   document.documentElement.clientHeight,
+  //   document.documentElement.clientWidth
+  // );
+
+  // Scrolling
+  // The position s1coords.top is relative to the viewport
+  // If we are at the top s1coords.top is the distance to s1coords and window.scrollY is 0
+  // If we scroll down s1coords.top change, are less, so we have to add to its coordinates the current scroll
+  // s1coords.top + window.scrollY
+  //   window.scrollTo(
+  //     s1coords.left + window.scrollX,
+  //     s1coords.top + window.scrollY
+  //   );
+});
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 /// SELECTING CREATING AND DELETING ELEMENTS
@@ -65,76 +114,76 @@ document.addEventListener('keydown', function (e) {
 //     `;
 // containerMovements.insertAdjacentHTML('afterbegin', html);
 
-const message = document.createElement('div');
-message.classList.add('cookie-message');
-// message.textContent = "We use cookies for improved functionality and analytics."
-message.innerHTML =
-  "We use cookies for improved functionality and analytics. <button class='btn btn--close-cookie'>Got it!</button>";
-// header.prepend(message); // First child
-// header.append(message); // Last child
-// header.append(message.cloneNode(true)); // To have the same DOM element cloned
-header.before(message); // Before header, sibling
-// header.after(message); // After header, sibling
+// const message = document.createElement('div');
+// message.classList.add('cookie-message');
+// // message.textContent = "We use cookies for improved functionality and analytics."
+// message.innerHTML =
+//   "We use cookies for improved functionality and analytics. <button class='btn btn--close-cookie'>Got it!</button>";
+// // header.prepend(message); // First child
+// // header.append(message); // Last child
+// // header.append(message.cloneNode(true)); // To have the same DOM element cloned
+// header.before(message); // Before header, sibling
+// // header.after(message); // After header, sibling
 
-// Delete elements
-document.querySelector('.btn--close-cookie').addEventListener('click', () => {
-  message.remove();
-  // message.parentElement.removeChild(message);
-});
+// // Delete elements
+// document.querySelector('.btn--close-cookie').addEventListener('click', () => {
+//   message.remove();
+//   // message.parentElement.removeChild(message);
+// });
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 /// STYLES, ATTRIBUTES AND CLASSES
 
 // STYLES
-message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
+// message.style.backgroundColor = '#37383d';
+// message.style.width = '120%';
 
-// Only show styles set by ourselves
-console.log(message.style.height); //""
-console.log(message.style.width); //120%
+// // Only show styles set by ourselves
+// console.log(message.style.height); //""
+// console.log(message.style.width); //120%
 
-// To get every style
-console.log(getComputedStyle(message).color);
-console.log(getComputedStyle(message).height);
+// // To get every style
+// console.log(getComputedStyle(message).color);
+// console.log(getComputedStyle(message).height);
 
-// Change a style by taking the previus one
-message.style.height =
-  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+// // Change a style by taking the previus one
+// message.style.height =
+//   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
 
-// :root{} propertys
-document.documentElement.style.setProperty('--color-primary', 'orangered');
+// // :root{} propertys
+// document.documentElement.style.setProperty('--color-primary', 'orangered');
 
-// ATTRIBUTES
-// Read
-const logo = document.querySelector('.nav__logo');
-console.log(logo.alt);
-console.log(logo.src); // Absolute path
-console.log(logo.className);
+// // ATTRIBUTES
+// // Read
+// const logo = document.querySelector('.nav__logo');
+// console.log(logo.alt);
+// console.log(logo.src); // Absolute path
+// console.log(logo.className);
 
-// Set
-logo.alt = 'Beautiful minimalist logo';
-logo.setAttribute('compay', 'Bankist');
-logo.setAttribute('designer', 'Alberto');
-console.log(logo.getAttribute('designer'));
-console.log(logo.getAttribute('src')); // Relative path
+// // Set
+// logo.alt = 'Beautiful minimalist logo';
+// logo.setAttribute('compay', 'Bankist');
+// logo.setAttribute('designer', 'Alberto');
+// console.log(logo.getAttribute('designer'));
+// console.log(logo.getAttribute('src')); // Relative path
 
-const link = document.querySelector('.nav__link--btn');
-console.log(link.href); // Absolute path
-console.log(link.getAttribute('href')); // Relative path
+// const link = document.querySelector('.nav__link--btn');
+// console.log(link.href); // Absolute path
+// console.log(link.getAttribute('href')); // Relative path
 
-// Non-standard
-console.log(logo.designer);
+// // Non-standard
+// console.log(logo.designer);
 
-// Data attribute
-logo.setAttribute('data-version-number', '3.0');
-console.log(logo.dataset.versionNumber);
+// // Data attribute
+// logo.setAttribute('data-version-number', '3.0');
+// console.log(logo.dataset.versionNumber);
 
-// Classes
-logo.classList.add('c', 'j');
-logo.classList.remove('c');
-logo.classList.toggle('c');
-logo.classList.contains('c'); // not includes
+// // Classes
+// logo.classList.add('c', 'j');
+// logo.classList.remove('c');
+// logo.classList.toggle('c');
+// logo.classList.contains('c'); // not includes
 
-// DONT USE OVERWRITE
-// logo.className = "alberto"
+// // DONT USE OVERWRITE
+// // logo.className = "alberto"
