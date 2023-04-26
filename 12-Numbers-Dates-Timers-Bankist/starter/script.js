@@ -11,23 +11,32 @@
 
 const account1 = {
   owner: 'Jonas Schmedtmann',
-  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
-
+  // movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+  movements: [
+    { value: 200, date: '2019-11-18T21:31:17.178Z' },
+    { value: 455.23, date: '2019-12-23T07:42:02.383Z' },
+    { value: -306.5, date: '2020-01-28T09:15:04.904Z' },
+    { value: 25000, date: '2020-04-01T10:17:24.185Z' },
+    { value: -642.21, date: '2023-04-29T14:11:59.604Z' },
+    { value: -133.9, date: '2023-04-28T17:01:17.194Z' },
+    { value: 79.97, date: '2023-04-27T09:17:17.929Z' },
+    { value: 1300, date: '2023-04-26T10:51:36.790Z' },
+  ],
   interestRate: 1.2, // %
   pin: 1111,
   transferFrom: {},
   transferTo: {},
 
-  movementsDates: [
-    '2019-11-18T21:31:17.178Z',
-    '2019-12-23T07:42:02.383Z',
-    '2020-01-28T09:15:04.904Z',
-    '2020-04-01T10:17:24.185Z',
-    '2023-04-29T14:11:59.604Z',
-    '2023-04-28T17:01:17.194Z',
-    '2023-04-27T09:17:17.929Z',
-    '2023-04-26T10:51:36.790Z',
-  ],
+  // movementsDates: [
+  //   '2019-11-18T21:31:17.178Z',
+  //   '2019-12-23T07:42:02.383Z',
+  //   '2020-01-28T09:15:04.904Z',
+  //   '2020-04-01T10:17:24.185Z',
+  //   '2023-04-29T14:11:59.604Z',
+  //   '2023-04-28T17:01:17.194Z',
+  //   '2023-04-27T09:17:17.929Z',
+  //   '2023-04-26T10:51:36.790Z',
+  // ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
 };
@@ -146,24 +155,15 @@ const displayMovements = function (acc, sorted = false) {
 
   // sort movements
   const movs = sorted
-    ? acc.movements.slice().sort((a, b) => a - b)
+    ? acc.movements.slice().sort((a, b) => a.value - b.value)
     : acc.movements;
 
-  const calcDaysPassed = (date1, date2) =>
-    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
-
-  const movsDate = sorted
-    ? acc.movementsDates
-        .slice()
-        .sort((a, b) => (new Date(b) - new Date(a)) / (1000 * 60 * 60 * 24))
-    : acc.movementsDates;
-
-  console.log(movsDate);
+  console.log(movs);
 
   // Check if deposit of withdrawal
   movs.forEach(function (movement, i) {
-    const movementType = movement > 0 ? 'deposit' : 'withdrawal';
-    const date = new Date(movsDate[i]);
+    const movementType = movement.value > 0 ? 'deposit' : 'withdrawal';
+    const date = new Date(movement.date);
 
     // console.log(daysPassed);
 
@@ -178,7 +178,7 @@ const displayMovements = function (acc, sorted = false) {
       <div class="movements__date">${displayDate}</div>
       <div class="movements__value">${formatCurrency(
         acc.locale,
-        movement.toFixed(2),
+        movement.value.toFixed(2),
         acc.currency
       )}</div>
          
@@ -210,7 +210,10 @@ createUsernames(accounts);
  * @returns the sum of all his movements
  */
 const calcDisplayBalance = account => {
-  account.balance = account.movements.reduce((acc, salary) => acc + salary, 0);
+  account.balance = account.movements.reduce(
+    (acc, salary) => acc + salary.value,
+    0
+  );
   labelBalance.textContent = `${formatCurrency(
     account.locale,
     account.balance,
@@ -224,8 +227,8 @@ const calcDisplayBalance = account => {
  */
 const calcDisplaySummary = account => {
   const incomes = account.movements
-    .filter(mov => mov > 0)
-    .reduce((acc, inc) => acc + inc, 0);
+    .filter(mov => mov.value > 0)
+    .reduce((acc, inc) => acc + inc.value, 0);
   labelSumIn.textContent = `${formatCurrency(
     account.locale,
     incomes,
@@ -233,8 +236,8 @@ const calcDisplaySummary = account => {
   )}`;
 
   const outcomes = account.movements
-    .filter(mov => mov < 0)
-    .reduce((acc, inc) => acc + inc, 0);
+    .filter(mov => mov.value < 0)
+    .reduce((acc, inc) => acc + inc.value, 0);
   labelSumOut.textContent = `${formatCurrency(
     account.locale,
     Math.abs(outcomes),
@@ -242,11 +245,11 @@ const calcDisplaySummary = account => {
   )}`;
 
   const interest = account.movements
-    .filter(mov => mov > 0)
+    .filter(mov => mov.value > 0)
     .reduce(
       (acc, dep) =>
-        (dep * 1.2) / 100 > 1
-          ? acc + (dep * account.interestRate) / 100
+        (dep.value * 1.2) / 100 > 1
+          ? acc + (dep.value * account.interestRate) / 100
           : acc + 0,
       0
     );
