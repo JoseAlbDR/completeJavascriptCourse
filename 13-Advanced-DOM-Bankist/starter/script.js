@@ -50,24 +50,60 @@ btnScrollTo.addEventListener('click', event => {
 
 // EVENTS
 // Mouseenter
-const h1 = document.querySelector('h1');
+// const h1 = document.querySelector('h1');
 
-// Need a named function to remove an event listener
-// Remove event listener
-// Once the mouse enter the h1 the first time it will remove the eventListener
-// And it wont pop alert anymore
-const alertH1 = function (event) {
-  alert('addEventListener: Great! You are reading the heading :D');
+// // Need a named function to remove an event listener
+// // Remove event listener
+// // Once the mouse enter the h1 the first time it will remove the eventListener
+// // And it wont pop alert anymore
+// const alertH1 = function (event) {
+//   alert('addEventListener: Great! You are reading the heading :D');
 
-  // h1.removeEventListener('mouseenter', alertH1);
-};
-h1.addEventListener('mouseenter', alertH1);
+//   // h1.removeEventListener('mouseenter', alertH1);
+// };
+// h1.addEventListener('mouseenter', alertH1);
 
-// Remove the event listener after 3 seconds
-setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
+// // Remove the event listener after 3 seconds
+// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
 
 // EVENTS BUBBLING AND CAPTURING
 
+const randomNumber = (max, min) => {
+  return Math.trunc(Math.random() * (min - max + 1) + max);
+};
+
+const randomColor = () =>
+  `rgb(${randomNumber(0, 255)}, ${randomNumber(0, 255)}, ${randomNumber(
+    0,
+    255
+  )})`;
+
+// When click in .nav__link, .nav__links and .nav also changes its color becaouse of
+// the event propagation ONLY TO PARENTS ELEMENTS
+// Only with parents not siblings
+// Clicking on LINK will propage to CONTAINER and NAVE as they are his parents
+// THEY RECIEVE THE EXACT SAME EVENT
+document
+  .querySelector('.nav__link')
+  .addEventListener('click', function (event) {
+    this.style.backgroundColor = randomColor();
+    console.log('LINK', event.target, event.currentTarget);
+
+    // STOP EVENT PROPAGATIN
+    // event.stopPropagation();
+  });
+
+document
+  .querySelector('.nav__links')
+  .addEventListener('click', function (event) {
+    this.style.backgroundColor = randomColor();
+    console.log('CONTAINER', event.target, event.currentTarget);
+  });
+
+document.querySelector('.nav').addEventListener('click', function (event) {
+  this.style.backgroundColor = randomColor();
+  console.log('NAV', event.target, event.currentTarget);
+});
 // // Coordinates
 // const s1coords = section1.getBoundingClientRect();
 // // console.log(s1coords);
