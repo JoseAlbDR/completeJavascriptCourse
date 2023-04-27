@@ -9,6 +9,9 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 const header = document.querySelector('.header');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const content = document.querySelectorAll('.operations__content');
 
 const openModal = function (event) {
   event.preventDefault();
@@ -46,21 +49,6 @@ btnScrollTo.addEventListener('click', event => {
 //////////////////////////////////////////////////////////
 /// PAGE NAVIGATION
 
-// NOT EFFICIENT
-// document.querySelectorAll('.nav__link').forEach(nav =>
-//   nav.addEventListener('click', function (event) {
-//     event.preventDefault();
-//     // ABSOLUTE PATH
-//     // const id = this.href;
-
-//     // RELATIVE PATH
-//     // One eventlistener foreach menu element is not efficient
-//     const id = this.getAttribute('href'); // section--1, section--2, section--3
-//     const section = document.querySelector(id); // Select the element with that id
-//     section.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll
-//   })
-// );
-
 // EVENT DELEGATION
 // 1. Add event listener to a common parent element
 // 2. Determine what element originated the event
@@ -84,6 +72,101 @@ document
       section.scrollIntoView({ behavior: 'smooth' });
     }
   });
+//////////////////////////////////////////////////////////
+/// TABBED COMPONENT
+
+tabsContainer.addEventListener('click', function (event) {
+  event.preventDefault();
+  // The closest father with operations__tabs (to get rid of SPAN clicks)
+  const currentTab = event.target.closest('.operations__tab');
+
+  // Select the content asocciated with the current tab
+  // <button class="btn operations__tab operations__tab--2" data-tab="2"> currentTab.dataset.tab => 2
+  // <div class="operations__content operations__content--2">
+  const currentContent = document.querySelector(
+    `.operations__content--${currentTab.dataset.tab}`
+  );
+
+  // Guard clause (to prevent the click in the father (operations__tab--container))
+  if (!currentTab) return;
+
+  // Active
+  // Remove active from each tab
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+
+  // Remove active from each content
+  content.forEach(cont => cont.classList.remove('operations__content--active'));
+
+  // Add active to currentTab and currentContent
+  currentTab.classList.add('operations__tab--active');
+  currentContent.classList.add('operations__content--active');
+});
+// document
+//   .querySelector('.operations__tab-container')
+//   .addEventListener('click', function (event) {
+//     event.preventDefault();
+//     const current = event.target;
+
+//     [...current.parentElement.children].forEach(children => {
+//       if (children !== event.target || children.tagName === 'SPAN') {
+//         children.classList.remove('operations__tab--active');
+//       } else {
+//         children.classList.add('operations__tab--active');
+//       }
+//     });
+//   });
+
+//////////////////////////////////////////////////////////
+/// DOM REVERSING
+// const h1 = document.querySelector('h1');
+
+// // Going downards: children
+// // Select the childrens of h1 that meet class = "highlight"
+// console.log(h1.querySelectorAll('.highlight'));
+// // Every single node
+// console.log(h1.childNodes);
+// // Only children (span, br, span)
+// console.log(h1.children);
+// // Change color of first and last children (span)
+// h1.firstElementChild.style.color = 'white';
+// h1.lastElementChild.style.color = 'orangered';
+
+// // Going upwards: parents
+// // header__title is the direct pather
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+// // Closes father that meet the requeriment
+// console.log(h1.closest('.header'));
+// h1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+// // Going sideways: siblings
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
+
+// // Get ALL of the siblings, move to parent, and select children, includes itself
+// console.log(h1.parentElement.children);
+
+// // ALl the siblings except for h1
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el !== h1) el.style.transform = 'scale(0.5)';
+// });
+
+// NOT EFFICIENT
+// document.querySelectorAll('.nav__link').forEach(nav =>
+//   nav.addEventListener('click', function (event) {
+//     event.preventDefault();
+//     // ABSOLUTE PATH
+//     // const id = this.href;
+
+//     // RELATIVE PATH
+//     // One eventlistener foreach menu element is not efficient
+//     const id = this.getAttribute('href'); // section--1, section--2, section--3
+//     const section = document.querySelector(id); // Select the element with that id
+//     section.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll
+//   })
+// );
 
 // EVENT PROPAGATION
 // EVENTS
