@@ -1,15 +1,13 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
+////////////////////////////////////////
+// Variables
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-
-////////////////////////////////////////
-// Variables
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 const header = document.querySelector('.header');
 
 const openModal = function (event) {
@@ -34,20 +32,60 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-/////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
 /// SMOOTH SCROLL
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
 
 // EVENT LISTENERS
 
+// Button scrolling
 btnScrollTo.addEventListener('click', event => {
   // MODERM WAY SMOOOOOOOTH
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
+//////////////////////////////////////////////////////////
+/// PAGE NAVIGATION
+
+// NOT EFFICIENT
+// document.querySelectorAll('.nav__link').forEach(nav =>
+//   nav.addEventListener('click', function (event) {
+//     event.preventDefault();
+//     // ABSOLUTE PATH
+//     // const id = this.href;
+
+//     // RELATIVE PATH
+//     // One eventlistener foreach menu element is not efficient
+//     const id = this.getAttribute('href'); // section--1, section--2, section--3
+//     const section = document.querySelector(id); // Select the element with that id
+//     section.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll
+//   })
+// );
+
+// EVENT DELEGATION
+// 1. Add event listener to a common parent element
+// 2. Determine what element originated the event
+document
+  .querySelector('.nav__links')
+  .addEventListener('click', function (event) {
+    // Prevent default behaviour (href anchor in html)
+    event.preventDefault();
+
+    // Matching strategy
+    // If the element that generates the event have the class
+    // that we are lookin for
+    if (event.target.classList.contains('nav__link')) {
+      // Select the id in href
+      const id = event.target.getAttribute('href');
+
+      // Get that element
+      const section = document.querySelector(id);
+
+      // Add scrollIntoView to the element that created the event
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+// EVENT PROPAGATION
 // EVENTS
 // Mouseenter
 // const h1 = document.querySelector('h1');
@@ -68,42 +106,42 @@ btnScrollTo.addEventListener('click', event => {
 
 // EVENTS BUBBLING AND CAPTURING
 
-const randomNumber = (max, min) => {
-  return Math.trunc(Math.random() * (min - max + 1) + max);
-};
+// const randomNumber = (max, min) => {
+//   return Math.trunc(Math.random() * (min - max + 1) + max);
+// };
 
-const randomColor = () =>
-  `rgb(${randomNumber(0, 255)}, ${randomNumber(0, 255)}, ${randomNumber(
-    0,
-    255
-  )})`;
+// const randomColor = () =>
+//   `rgb(${randomNumber(0, 255)}, ${randomNumber(0, 255)}, ${randomNumber(
+//     0,
+//     255
+//   )})`;
 
-// When click in .nav__link, .nav__links and .nav also changes its color becaouse of
-// the event propagation ONLY TO PARENTS ELEMENTS
-// Only with parents not siblings
-// Clicking on LINK will propage to CONTAINER and NAVE as they are his parents
-// THEY RECIEVE THE EXACT SAME EVENT
-document
-  .querySelector('.nav__link')
-  .addEventListener('click', function (event) {
-    this.style.backgroundColor = randomColor();
-    console.log('LINK', event.target, event.currentTarget);
+// // When click in .nav__link, .nav__links and .nav also changes its color becaouse of
+// // the event propagation ONLY TO PARENTS ELEMENTS
+// // Only with parents not siblings
+// // Clicking on LINK will propage to CONTAINER and NAVE as they are his parents
+// // THEY RECIEVE THE EXACT SAME EVENT
+// document
+//   .querySelector('.nav__link')
+//   .addEventListener('click', function (event) {
+//     this.style.backgroundColor = randomColor();
+//     console.log('LINK', event.target, event.currentTarget);
 
-    // STOP EVENT PROPAGATIN
-    // event.stopPropagation();
-  });
+//     // STOP EVENT PROPAGATIN
+//     // event.stopPropagation();
+//   });
 
-document
-  .querySelector('.nav__links')
-  .addEventListener('click', function (event) {
-    this.style.backgroundColor = randomColor();
-    console.log('CONTAINER', event.target, event.currentTarget);
-  });
+// document
+//   .querySelector('.nav__links')
+//   .addEventListener('click', function (event) {
+//     this.style.backgroundColor = randomColor();
+//     console.log('CONTAINER', event.target, event.currentTarget);
+//   });
 
-document.querySelector('.nav').addEventListener('click', function (event) {
-  this.style.backgroundColor = randomColor();
-  console.log('NAV', event.target, event.currentTarget);
-});
+// document.querySelector('.nav').addEventListener('click', function (event) {
+//   this.style.backgroundColor = randomColor();
+//   console.log('NAV', event.target, event.currentTarget);
+// });
 // // Coordinates
 // const s1coords = section1.getBoundingClientRect();
 // // console.log(s1coords);
