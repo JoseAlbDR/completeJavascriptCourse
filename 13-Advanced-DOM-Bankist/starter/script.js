@@ -12,6 +12,7 @@ const header = document.querySelector('.header');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const content = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 const openModal = function (event) {
   event.preventDefault();
@@ -33,6 +34,25 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
     closeModal();
   }
+});
+
+// COOKIES STICKY BOTTOM
+const message = document.createElement('div');
+message.classList.add('cookie-message');
+// message.textContent = "We use cookies for improved functionality and analytics."
+message.innerHTML =
+  "We use cookies for improved functionality and analytics. <button class='btn btn--close-cookie'>Got it!</button>";
+// header.prepend(message); // First child
+// header.append(message); // Last child
+
+// // header.append(message.cloneNode(true)); // To have the same DOM element cloned
+// header.before(message); // Before header, sibling
+document.body.append(message); // After header, sibling
+
+// Delete elements
+document.querySelector('.btn--close-cookie').addEventListener('click', () => {
+  message.remove();
+  // message.parentElement.removeChild(message);
 });
 
 /////////////////////////////////////////////////////////
@@ -61,7 +81,10 @@ document
     // Matching strategy
     // If the element that generates the event have the class
     // that we are lookin for
-    if (event.target.classList.contains('nav__link')) {
+    if (
+      event.target.classList.contains('nav__link') &&
+      !event.target.classList.contains('nav__link--btn')
+    ) {
       // Select the id in href
       const id = event.target.getAttribute('href');
 
@@ -72,6 +95,7 @@ document
       section.scrollIntoView({ behavior: 'smooth' });
     }
   });
+
 //////////////////////////////////////////////////////////
 /// TABBED COMPONENT
 
@@ -101,6 +125,126 @@ tabsContainer.addEventListener('click', function (event) {
   currentTab.classList.add('operations__tab--active');
   currentContent.classList.add('operations__content--active');
 });
+
+//////////////////////////////////////////////////////////
+/// MENU FADE ANIMATION
+const handleHover = function (event) {
+  if (event.target.classList.contains('nav__link')) {
+    const currentNavLink = event.target;
+    // all children of .nav (closes father with that class) that have the class .nav__link
+    const siblings = currentNavLink
+      .closest('.nav')
+      .querySelectorAll('.nav__link');
+    const logo = currentNavLink.closest('.nav').querySelector('.nav__logo');
+
+    // Foreach sibling that is not the currentNavLink
+    siblings.forEach(sibling => {
+      if (sibling !== currentNavLink) sibling.style.opacity = this;
+      logo.style.opacity = this;
+    });
+  }
+};
+
+// hadleHover.bind(0.5) is like call handleHover(event, 0.5)
+// It is like nav.addEventListener('mouseover', function());
+// Passing "argument" into handler
+// handleHover 0.5
+const handleHoverHalf = handleHover.bind(0.5);
+
+nav.addEventListener('mouseover', handleHoverHalf);
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+//////////////////////////////////////////////////////////
+/// INTERSECTION OBSERVER API
+
+// STICKY NAV BAR
+const navHeight = nav.getBoundingClientRect().height;
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  // const entrie = entries[0]
+  !entry.isIntersecting
+    ? nav.classList.add('sticky')
+    : nav.classList.remove('sticky');
+};
+
+const headerObs = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 1,
+});
+headerObs.observe(header);
+
+// REVEAL SECTION
+// Select all sections
+const allSections = document.querySelectorAll('.section');
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  // Unobserve each entry
+  observer.unobserve(entry.target);
+};
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+// One observer foreach section
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
+
+// LAZY LOADING IMAGES
+// All the images that have the property data-src
+const imgTargets = document.querySelectorAll('.features__img');
+// const imgTargets1 = document.querySelectorAll('img[data-src]');
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('lazy-img');
+  entry.target.src = entry.target.dataset.src;
+  // const img = entry.target.getAttribute('data-src');
+  // entry.target.setAttribute('src', img);
+  // Removes the blur ONCE the img is loaded
+  // entry.target.addEventListener('load', () =>
+  //   entry.target.classList.remove('lazy-img')
+  // );
+  observer.unobserve(entry.target);
+};
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0.5,
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
+
+//////////////////////////////////////////////////////////
+/// SLIDER
+
+// const obsCallback = function (entries, observer) {
+//   entries.forEach(entry => {
+//     entry.isIntersecting
+//       ? nav.classList.add('sticky')
+//       : nav.classList.remove('sticky');
+//   });
+// };
+
+// const obsOptions = {
+//   root: document, // Target element for intersection, VIEWPORT if null
+//   threshold: [0.2], // The % of witch isIntersection will become true
+// };
+
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(section1);
+// window.addEventListener('scroll', function () {
+//   const s1coords = section1.getBoundingClientRect();
+//   console.log(window.scrollY);
+//   console.log(s1coords.top);
+
+//   s1coords.top <= 0
+//     ? nav.classList.add('sticky')
+//     : nav.classList.remove('sticky');
+// });
 // document
 //   .querySelector('.operations__tab-container')
 //   .addEventListener('click', function (event) {
@@ -290,23 +434,6 @@ tabsContainer.addEventListener('click', function (event) {
 //         </div>
 //     `;
 // containerMovements.insertAdjacentHTML('afterbegin', html);
-
-// const message = document.createElement('div');
-// message.classList.add('cookie-message');
-// // message.textContent = "We use cookies for improved functionality and analytics."
-// message.innerHTML =
-//   "We use cookies for improved functionality and analytics. <button class='btn btn--close-cookie'>Got it!</button>";
-// // header.prepend(message); // First child
-// // header.append(message); // Last child
-// // header.append(message.cloneNode(true)); // To have the same DOM element cloned
-// header.before(message); // Before header, sibling
-// // header.after(message); // After header, sibling
-
-// // Delete elements
-// document.querySelector('.btn--close-cookie').addEventListener('click', () => {
-//   message.remove();
-//   // message.parentElement.removeChild(message);
-// });
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////

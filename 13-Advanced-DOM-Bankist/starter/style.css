@@ -106,7 +106,7 @@ button:focus {
 }
 
 img {
-  transition: filter 0.5s;
+  transition: filter 1s;
 }
 
 .lazy-img {
@@ -122,12 +122,14 @@ img {
   width: 100%;
   padding: 0 6rem;
   z-index: 100;
+  transition: all 1s;
+  position: fixed;
 }
 
 /* nav and stickly class at the same time */
 .nav.sticky {
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: all 1s;
 }
 
 .nav__logo {
@@ -143,6 +145,7 @@ img {
 
 .nav__item {
   margin-left: 4rem;
+  transition: all 1s;
 }
 
 .nav__link:link,
@@ -671,4 +674,7 @@ h4 {
   color: #bbb;
   font-size: 1.5rem;
   font-weight: 400;
+  position: fixed;
+  bottom: 0;
+  opacity: 0.8;
 }
