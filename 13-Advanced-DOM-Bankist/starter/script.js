@@ -189,10 +189,10 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 });
 
 // One observer foreach section
-allSections.forEach(section => {
-  sectionObserver.observe(section);
-  section.classList.add('section--hidden');
-});
+// allSections.forEach(section => {
+//   sectionObserver.observe(section);
+//   section.classList.add('section--hidden');
+// });
 
 // LAZY LOADING IMAGES
 // All the images that have the property data-src
@@ -220,7 +220,105 @@ imgTargets.forEach(img => imgObserver.observe(img));
 
 //////////////////////////////////////////////////////////
 /// SLIDER
+const slider = function () {
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  const slider = document.querySelector('.slider');
+  const dotContainer = document.querySelector('.dots');
 
+  const maxSlide = slides.length;
+  let curSlide = 0;
+  slider.style.transform = 'scale(0.5) translateX(-500px)';
+  slider.style.overflow = 'visible';
+
+  const createDots = function () {
+    slides.forEach((_, i) => {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+
+  /**
+   * Activate currentSlide dot
+   * @param {*} slide current slide
+   */
+  const activateDot = function (slide) {
+    // Select all dots
+    const allDots = document.querySelectorAll('.dots__dot');
+    // For each dot
+    allDots.forEach(dot => {
+      // Remove active
+      dot.classList.remove('dots__dot--active');
+      // Get current dot index as number
+      const currentDot = Number(dot.getAttribute('data-slide'));
+      // Activate the dot of current slide
+      // Current slide as a Number because in click event we get a String
+      if (currentDot === Number(slide)) {
+        dot.classList.add('dots__dot--active');
+      }
+    });
+  };
+
+  // Go desired slide
+  const goToSlide = function (slide) {
+    slides.forEach((s, i) => {
+      s.style.transform = `translateX(${100 * (i - slide)}%)`;
+    });
+  };
+
+  // Next slide
+  const nextSlide = function () {
+    curSlide === maxSlide - 1 ? (curSlide = 0) : curSlide++;
+    console.log('curSlide inside nextSlide:', curSlide);
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  // Prev slide
+  const prevSlide = function () {
+    curSlide === 0 ? (curSlide = maxSlide - 1) : curSlide--;
+    console.log('curSlide inside prevSlide:', curSlide);
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  // Initialize
+  const init = function () {
+    createDots();
+    activateDot(curSlide);
+    goToSlide(curSlide);
+  };
+  init();
+
+  // Event handlers
+  // Next arrow
+  btnRight.addEventListener('click', nextSlide);
+  // Previous arrow
+  btnLeft.addEventListener('click', prevSlide);
+  // Key arrow press
+  document.addEventListener('keydown', function (e) {
+    e.key === 'ArrowRight' ? nextSlide() : prevSlide();
+  });
+  // Click on dot
+  dotContainer.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dots__dot')) {
+      // Get the number of dot clicked
+      // const slide = e.target.dataset.slide
+      const { slide } = e.target.dataset;
+      // Change the current slide to match the current dot
+      curSlide = Number(slide);
+      // Go the slide
+      goToSlide(slide);
+      // Activate the dot
+      activateDot(slide);
+    }
+  });
+};
+slider();
 // const obsCallback = function (entries, observer) {
 //   entries.forEach(entry => {
 //     entry.isIntersecting
