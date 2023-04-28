@@ -88,3 +88,36 @@ console.log(arr.unique()); //[1, 0]
 
 const h1 = document.querySelector('h1');
 console.dir(x => x + 1);
+
+/////////////////////////////////////////////////////
+/// ES6 CLASSES
+
+// class expresion
+// const PersonCl = class {}
+
+// class decoration
+class PersonCl {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  // Methods will be added to PersonCl.prototype property
+  calcAge() {
+    console.log(2023 - this.birthYear);
+  }
+}
+// Same as
+PersonCl.prototype.greet = function () {
+  console.log(`Hey ${this.firstName}`);
+};
+const jess = new PersonCl('Jessica', 1996);
+jess.calcAge();
+jess.greet();
+console.log(jess);
+
+// 1. Classes are NOT hoisted (u cannot use them b4 declaration)
+// 2. Calsses are first-class citizes (pass to functions and return from functions)
+// 3. Classes are executed in strict mode
+
+/// SETTERS AND GETTERS
