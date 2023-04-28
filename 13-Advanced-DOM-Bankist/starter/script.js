@@ -169,7 +169,7 @@ const stickyNav = function (entries) {
 
 const headerObs = new IntersectionObserver(stickyNav, {
   root: null,
-  threshold: 1,
+  threshold: 0.9,
 });
 headerObs.observe(header);
 
@@ -189,10 +189,10 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 });
 
 // One observer foreach section
-// allSections.forEach(section => {
-//   sectionObserver.observe(section);
-//   section.classList.add('section--hidden');
-// });
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
 
 // LAZY LOADING IMAGES
 // All the images that have the property data-src
@@ -336,6 +336,7 @@ const slider = function () {
       goToSlide(slide);
       // Activate the dot
       activateDot(slide);
+      hideSlides(slide);
     }
   });
 };
