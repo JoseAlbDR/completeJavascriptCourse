@@ -87,7 +87,10 @@ const inputClosePin = document.querySelector('.form__input--pin');
  */
 const formatMovementDate = (date, locale) => {
   // Format Date String
+  // console.log(date);
+
   const daysPassed = calcDaysPassed(date, new Date());
+  // console.log(daysPassed);
 
   if (daysPassed < 1 && daysPassed >= 0) return 'Today';
   if (daysPassed >= 1 && daysPassed < 2) return `yesterday`;
@@ -387,12 +390,12 @@ btnTransfer.addEventListener('click', event => {
   ) {
     setTimeout(() => {
       // Doing the transfer
-      currentAccount.movements.push(-amount);
-      currentAccount.movementsDates.push(new Date());
+      const movement = { value: -amount, date: new Date().toISOString() };
+      currentAccount.movements.push(movement);
 
       // Add transfer date
-      transferToAccount.movements.push(amount);
-      currentAccount.movementsDates.push(new Date());
+      const movementTo = { value: amount, date: new Date().toISOString() };
+      transferToAccount.movements.push(movementTo);
 
       updateUI(currentAccount);
     }, 3000);
@@ -414,16 +417,19 @@ btnLoan.addEventListener('click', event => {
   if (timer) clearInterval(timer);
   timer = timerOut();
   const inputLoan = Math.floor(inputLoanAmount.value);
+  console.log(inputLoan);
+  console.log(currentAccount.movements);
+
   if (
     inputLoan > 0 &&
-    currentAccount.movements.some(amount => amount >= inputLoan * 0.1)
+    currentAccount.movements.some(movement => movement.value >= inputLoan * 0.1)
   ) {
     setTimeout(() => {
       // Add movement
-      currentAccount.movements.push(inputLoan);
-
-      // Add loan date
-      currentAccount.movementsDates.push(new Date().toISOString());
+      console.log(new Date());
+      const movement = { value: inputLoan, date: new Date().toISOString() };
+      currentAccount.movements.push(movement);
+      currentAccount.movements.forEach(movement => console.log(movement.date));
 
       // Update UI
       updateUI(currentAccount);
