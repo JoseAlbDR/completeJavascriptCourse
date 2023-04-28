@@ -1,4 +1,5 @@
 'use strict';
+
 // const pepe = {
 //   name: 'pepe',
 //   age: 26,
@@ -40,6 +41,12 @@ const leo = new Person('Leonidas', 2020);
 console.log(matilde, leo);
 console.log(alberto instanceof Person);
 
+Person.hey = function () {
+  console.log('Hey there!!!!!!!!!');
+};
+// Static method
+Person.hey();
+// alberto.hey(); // Is not a function, not in the prototype
 // PROTOTIPES
 // Methods
 Person.prototype.calcAge = function () {
@@ -97,22 +104,45 @@ console.dir(x => x + 1);
 
 // class decoration
 class PersonCl {
-  constructor(firstName, birthYear) {
-    this.firstName = firstName;
+  constructor(fullName, birthYear) {
+    // this.fullName is a setter
+    this.fullName = fullName;
     this.birthYear = birthYear;
   }
 
+  // Instance methods
   // Methods will be added to PersonCl.prototype property
   calcAge() {
-    console.log(2023 - this.birthYear);
+    return 2023 - this.birthYear;
   }
+
+  get age() {
+    return this.calcAge();
+  }
+
+  // Set a property that already exist
+  set fullName(name) {
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is not a full name!`);
+  }
+
+  // is like a property, Personcl.prototype.fullName
+  get fullName() {
+    return this._fullName;
+  }
+
+  // Static method PersonCl.hey()
+  static hey = function () {
+    console.log('Hey there!!!!!!!!!');
+  };
 }
 // Same as
 PersonCl.prototype.greet = function () {
-  console.log(`Hey ${this.firstName}`);
+  console.log(`Hey ${this.fullName}`);
 };
-const jess = new PersonCl('Jessica', 1996);
+const jess = new PersonCl('Jessica Davis', 1996);
 jess.calcAge();
+console.log(jess.age);
 jess.greet();
 console.log(jess);
 
@@ -120,4 +150,28 @@ console.log(jess);
 // 2. Calsses are first-class citizes (pass to functions and return from functions)
 // 3. Classes are executed in strict mode
 
+const walter = new PersonCl('Walter White', 1965);
 /// SETTERS AND GETTERS
+// class Account {
+//   constructor(owner, movements) {
+//     this.owner = owner;
+//     this.movements = movements;
+//   }
+
+//   get latest() {
+//     return this.movements.slice(-1).pop();
+//   }
+
+//   set latest(move) {
+//     this.movements.push(move);
+//   }
+// }
+
+// const jonas = new Account('Leo', [200, 530, 120, 300]);
+// console.log(jonas.latest);
+// jonas.latest = 500;
+// console.log(jonas.latest);
+
+// STATIC METHODS
+
+PersonCl.hey();
