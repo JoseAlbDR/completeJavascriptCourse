@@ -175,3 +175,30 @@ const walter = new PersonCl('Walter White', 1965);
 // STATIC METHODS
 
 PersonCl.hey();
+
+// OBJECT.CREATE
+const PersonProto = {
+  calcAge() {
+    console.log(2023 - this.birthYear);
+  },
+
+  init(name, birthYear) {
+    this.name = name;
+    this.birthYear = birthYear;
+  },
+};
+
+const steven = Object.create(PersonProto);
+console.log(steven);
+steven.name = 'Steven';
+steven.birthYear = 1980;
+steven.calcAge(); //43
+console.log(steven.__proto__); //PersonProto
+console.log(steven.__proto__ === PersonProto); //true
+const sara = Object.create(PersonProto);
+sara.init('Sara', 1979);
+console.log(sara); // "Sara", 1970
+const { name: firstName, birthYear } = sara;
+sara.calcAge(); // 44
+console.log(firstName); // Sara
+console.log(birthYear); // 19
