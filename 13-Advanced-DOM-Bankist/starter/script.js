@@ -189,10 +189,10 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 });
 
 // One observer foreach section
-// allSections.forEach(section => {
-//   sectionObserver.observe(section);
-//   section.classList.add('section--hidden');
-// });
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
 
 // LAZY LOADING IMAGES
 // All the images that have the property data-src
