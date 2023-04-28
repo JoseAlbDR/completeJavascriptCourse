@@ -229,7 +229,7 @@ const slider = function () {
 
   const maxSlide = slides.length;
   let curSlide = 0;
-  slider.style.transform = 'scale(0.5) translateX(-500px)';
+  // slider.style.transform = 'scale(0.5) translateX(-500px)';
   slider.style.overflow = 'visible';
 
   const createDots = function () {
@@ -238,6 +238,18 @@ const slider = function () {
         'beforeend',
         `<button class="dots__dot" data-slide="${i}"></button>`
       );
+    });
+  };
+
+  // Show only the current slide
+  const hideSlides = function () {
+    slides.forEach(slide => {
+      if (!slide.classList.contains(`slide--${curSlide + 1}`)) {
+        console.log(slide);
+        slide.style.opacity = 0;
+      } else {
+        slide.style.opacity = 100;
+      }
     });
   };
 
@@ -272,8 +284,9 @@ const slider = function () {
   // Next slide
   const nextSlide = function () {
     curSlide === maxSlide - 1 ? (curSlide = 0) : curSlide++;
-    console.log('curSlide inside nextSlide:', curSlide);
+    // console.log('curSlide inside nextSlide:', curSlide);
 
+    hideSlides();
     goToSlide(curSlide);
     activateDot(curSlide);
   };
@@ -281,7 +294,9 @@ const slider = function () {
   // Prev slide
   const prevSlide = function () {
     curSlide === 0 ? (curSlide = maxSlide - 1) : curSlide--;
-    console.log('curSlide inside prevSlide:', curSlide);
+    // console.log('curSlide inside prevSlide:', curSlide);
+
+    hideSlides();
     goToSlide(curSlide);
     activateDot(curSlide);
   };
@@ -291,6 +306,7 @@ const slider = function () {
     createDots();
     activateDot(curSlide);
     goToSlide(curSlide);
+    hideSlides();
   };
   init();
 
@@ -301,8 +317,13 @@ const slider = function () {
   btnLeft.addEventListener('click', prevSlide);
   // Key arrow press
   document.addEventListener('keydown', function (e) {
-    e.key === 'ArrowRight' ? nextSlide() : prevSlide();
+    if (e.key === 'ArrowRight') {
+      nextSlide();
+    } else if (e.key === 'ArrowLeft') {
+      prevSlide();
+    }
   });
+
   // Click on dot
   dotContainer.addEventListener('click', function (e) {
     if (e.target.classList.contains('dots__dot')) {
@@ -319,6 +340,21 @@ const slider = function () {
   });
 };
 slider();
+
+// document.addEventListener('DOMContentLoaded', function (event) {
+//   console.log('HTML parsed and DOM tree built!', event);
+// });
+
+// window.addEventListener('load', function (event) {
+//   console.log(('Plage fully loaded', event));
+// });
+
+// window.addEventListener('beforeunload', function (event) {
+//   event.preventDefault();
+//   console.log('Page exited', event);
+//   e.returnValue = '';
+// });
+
 // const obsCallback = function (entries, observer) {
 //   entries.forEach(entry => {
 //     entry.isIntersecting
