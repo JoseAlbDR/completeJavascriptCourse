@@ -45,7 +45,25 @@ const account2 = {
   locale: 'en-US',
 };
 
-const accounts = [account1, account2];
+const account3 = {
+  owner: 'Chigiro Nagata',
+  movements: [
+    { value: 5000, date: '2019-11-01T13:15:33.035Z' },
+    { value: 3400, date: '2019-11-30T09:48:16.867Z' },
+    { value: -150, date: '2019-12-25T06:04:23.907Z' },
+    { value: -790, date: '2020-01-25T14:18:46.235Z' },
+    { value: -3210, date: '2020-02-05T16:33:06.386Z' },
+    { value: -1000, date: '2020-04-10T14:43:26.374Z' },
+    { value: 8500, date: '2020-06-25T18:49:59.371Z' },
+    { value: -30, date: '2023-04-27T12:01:20.894Z' },
+  ],
+  interestRate: 1.5,
+  pin: 3333,
+  currency: 'JPY',
+  locale: 'ja-JP',
+};
+
+const accounts = [account1, account2, account3];
 
 /////////////////////////////////////////////////
 // Elements
@@ -381,6 +399,13 @@ btnTransfer.addEventListener('click', event => {
     account => account.username === transferTo
   );
 
+  // let currentExchange = {
+  //   "USD": 1,
+  //   "EURO": 0.91,
+  //   "JPY": 124.17,
+  //   "GBP": 0.65,
+  //   "BRL": 3.51,
+  // }
   // Process the tranfer if the transferToAccount exist, the amount is greater than 0 and the amount is lesser than the balance
   if (
     transferToAccount?.username &&
