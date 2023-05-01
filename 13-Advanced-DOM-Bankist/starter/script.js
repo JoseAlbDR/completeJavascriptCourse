@@ -169,7 +169,7 @@ const stickyNav = function (entries) {
 
 const headerObs = new IntersectionObserver(stickyNav, {
   root: null,
-  threshold: 1,
+  threshold: 0.9,
 });
 headerObs.observe(header);
 
@@ -336,6 +336,7 @@ const slider = function () {
       goToSlide(slide);
       // Activate the dot
       activateDot(slide);
+      hideSlides(slide);
     }
   });
 };
