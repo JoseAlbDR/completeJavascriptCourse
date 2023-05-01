@@ -282,7 +282,7 @@
 class Account {
   // PUBLIC FIELDS (intstances not prototype)
   locale = navigator.languaje;
-  _balance = 0;
+  balance = 0;
 
   // PRIVATE FIELDS
   #movements = [];
@@ -313,17 +313,20 @@ class Account {
   deposit(value) {
     this.#movements.push(value);
     this.#calcBalance();
+    return this;
   }
 
   withdraw(value) {
     this.deposit(-value);
     this.#calcBalance();
+    return this;
   }
 
   requestLoan(value) {
     if (this.#aproveLoan(value)) {
       this.deposit(value);
       console.log('Loan approved');
+      return this;
     }
   }
 }
@@ -338,3 +341,8 @@ console.log(acc1);
 console.log(acc1.getMovements());
 // console.log(acc1.#pin); // ERROR PRIVATE
 // console.log(acc1.#movements); // ERROR PRIVATE
+
+// CHAINING METHODS
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(25000).withdraw(4000);
+console.log(acc1.getMovements());
+console.log(acc1.balance);
