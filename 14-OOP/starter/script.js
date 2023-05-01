@@ -281,8 +281,8 @@
 
 class Account {
   // PUBLIC FIELDS (intstances not prototype)
-  locale = navigator.languaje;
-  balance = 0;
+  locale = navigator.languaje; // LIKE A DEFAULT VALUE
+  #balance = 0;
 
   // PRIVATE FIELDS
   #movements = [];
@@ -297,7 +297,7 @@ class Account {
 
   // PRIVATE METHODS
   #calcBalance() {
-    this.balance = this.#movements.reduce((acc, mov) => (acc += mov), 0);
+    this.#balance = this.#movements.reduce((acc, mov) => (acc += mov), 0);
   }
 
   #aproveLoan(value) {
@@ -308,6 +308,11 @@ class Account {
   // PUBLIC METHODS
   getMovements() {
     return this.#movements;
+  }
+
+  getBalance() {
+    this.#calcBalance();
+    return this.#balance;
   }
 
   deposit(value) {
@@ -345,4 +350,4 @@ console.log(acc1.getMovements());
 // CHAINING METHODS
 acc1.deposit(300).deposit(500).withdraw(35).requestLoan(25000).withdraw(4000);
 console.log(acc1.getMovements());
-console.log(acc1.balance);
+console.log(acc1.getBalance());
