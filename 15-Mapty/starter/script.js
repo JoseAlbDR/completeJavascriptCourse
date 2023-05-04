@@ -349,7 +349,17 @@ class App {
     // Reload the page
     location.reload();
   }
-// 
+}
 
 // Initializing App
 const app = new App();
+
+// TODO
+// EDIT, DELETE, DELETE ALL
+// SORT BY CERTAIN FIELD
+// REBUILD OBJECT FROM LOCAL STORAGE
+
+// POSITION DE MAP TO SHOW ALL WORKOUTS
+// DRAW LINES AND SHAPES INSTEAD OF JUST POINTS
+// GEOCODE LOCATION
+// DISPLAY WEATHER
