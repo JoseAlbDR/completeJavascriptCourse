@@ -399,6 +399,15 @@ btnTransfer.addEventListener('click', event => {
     account => account.username === transferTo
   );
 
+  // Currency convertion using external API call
+  let convertRate;
+  (async function () {
+    const response = await fetch(
+      `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${currentAccount.currency.toLowerCase()}/${transferToAccount.currency.toLowerCase()}.json`
+    );
+    const data = await response.json();
+    convertRate = data[transferToAccount.currency.toLowerCase()];
+  })();
   // let currentExchange = {
   //   "USD": 1,
   //   "EURO": 0.91,
@@ -419,7 +428,10 @@ btnTransfer.addEventListener('click', event => {
       currentAccount.movements.push(movement);
 
       // Add transfer date
-      const movementTo = { value: amount, date: new Date().toISOString() };
+      const movementTo = {
+        value: amount * convertRate,
+        date: new Date().toISOString(),
+      };
       transferToAccount.movements.push(movementTo);
 
       updateUI(currentAccount);
