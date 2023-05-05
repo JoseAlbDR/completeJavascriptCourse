@@ -269,6 +269,81 @@ const getCountryData = function (country) {
 // § Coordinates 3: -33.933, 18.474
 // GOOD LUCK 😀
 
+// 35501351181391641713x7132
+
+// btn.addEventListener('click', function () {
+//   getGPSData([-33.933, 18.474]);
+// });
+
+// console.log('Test start'); // First call stack
+// setTimeout(() => console.log('0 sec timer'), 0); // Fifth callback qeue
+// Promise.resolve('Resolved promise 1').then(res => console.log(res)); // Third microtask qeue
+// Promise.resolve('Resolved promise 2').then(res => {
+//   // Fourth microtask qeue
+//   for (let i = 0; i < 10000000; i++) {}
+//   console.log(res);
+// });
+// console.log('Test end'); // Second call stack
+
+// CREATE PROMISES
+
+// const lotteryPromise = new Promise(function (resolve, reject) {
+//   console.log('Lottery draw is happening.');
+
+//   setTimeout(function () {
+//     if (Math.random() >= 0.5) {
+//       resolve('You WIN.'); // then
+//     } else {
+//       reject(new Error('You LOSE.')); // catch
+//     }
+//   }, 2000);
+// });
+
+// // Consume promise
+// lotteryPromise
+//   .then(resolve => console.log(resolve)) // Catch resolve
+//   .catch(err => console.error(err)); // Catch reject
+
+// // Promisifying setTimeout
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// wait(1)
+//   .then(() => {
+//     console.log('I waited for 1 second.');
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log('I waited for 2 seconds.');
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log('I waited for 3 seconds');
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log('I waited for 4 seconds');
+//     return wait(1);
+//   });
+
+// Promise.resolve('abc').then(x => console.log(x));
+// Promise.reject('abc').catch(x => console.error(x));
+
+console.log('Getting position:');
+
+// Creating a promise
+const getPosition = function () {
+  return new Promise(function (resolve, reject) {
+    // navigator.geolocation.getCurrentPosition(
+    //   position => resolve(position), // Resolve
+    //   err => reject(err) // Reject
+    // );
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
 const fetchJSON = function (url, error = 'Something went wrong.') {
   return fetch(url).then(response => {
     console.log(response);
@@ -277,12 +352,16 @@ const fetchJSON = function (url, error = 'Something went wrong.') {
     return response.json();
   });
 };
-// 35501351181391641713x7132
-const getGPSData = function (gps) {
-  return fetchJSON(
-    `https://geocode.xyz/${gps}?geoit=json&auth=35501351181391641713x7132`,
-    'GPS coordinates error.'
-  )
+
+const getGPSData = function () {
+  getPosition()
+    .then(pos => {
+      const { latitude, longitude } = pos.coords;
+      return fetchJSON(
+        `https://geocode.xyz/${latitude},${longitude}?geoit=json&auth=35501351181391641713x7132`,
+        'GPS coordinates error.'
+      );
+    })
     .then(data => {
       if (!data.city || !data.country)
         throw new Error('City or country not found, try again.');
@@ -299,63 +378,7 @@ const getGPSData = function (gps) {
     .finally(() => (countriesContainer.style.opacity = 1));
 };
 
-btn.addEventListener('click', function () {
-  getGPSData([-33.933, 18.474]);
-});
+// Consuming a promise
+btn.addEventListener('click', getGPSData);
 
-// console.log('Test start'); // First call stack
-// setTimeout(() => console.log('0 sec timer'), 0); // Fifth callback qeue
-// Promise.resolve('Resolved promise 1').then(res => console.log(res)); // Third microtask qeue
-// Promise.resolve('Resolved promise 2').then(res => {
-//   // Fourth microtask qeue
-//   for (let i = 0; i < 10000000; i++) {}
-//   console.log(res);
-// });
-// console.log('Test end'); // Second call stack
-
-// CREATE PROMISES
-
-const lotteryPromise = new Promise(function (resolve, reject) {
-  console.log('Lottery draw is happening.');
-
-  setTimeout(function () {
-    if (Math.random() >= 0.5) {
-      resolve('You WIN.'); // then
-    } else {
-      reject(new Error('You LOSE.')); // catch
-    }
-  }, 2000);
-});
-
-// Consume promise
-lotteryPromise
-  .then(resolve => console.log(resolve)) // Catch resolve
-  .catch(err => console.error(err)); // Catch reject
-
-// Promisifying setTimeout
-const wait = function (seconds) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, seconds * 1000);
-  });
-};
-
-wait(1)
-  .then(() => {
-    console.log('I waited for 1 second.');
-    return wait(1);
-  })
-  .then(() => {
-    console.log('I waited for 2 seconds.');
-    return wait(1);
-  })
-  .then(() => {
-    console.log('I waited for 3 seconds');
-    return wait(1);
-  })
-  .then(() => {
-    console.log('I waited for 4 seconds');
-    return wait(1);
-  });
-
-Promise.resolve('abc').then(x => console.log(x));
-Promise.reject('abc').catch(x => console.error(x));
+// CHALLENGE 2
