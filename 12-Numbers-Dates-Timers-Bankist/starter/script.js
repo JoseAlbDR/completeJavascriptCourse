@@ -45,7 +45,25 @@ const account2 = {
   locale: 'en-US',
 };
 
-const accounts = [account1, account2];
+const account3 = {
+  owner: 'Chigiro Nagata',
+  movements: [
+    { value: 5000, date: '2019-11-01T13:15:33.035Z' },
+    { value: 3400, date: '2019-11-30T09:48:16.867Z' },
+    { value: -150, date: '2019-12-25T06:04:23.907Z' },
+    { value: -790, date: '2020-01-25T14:18:46.235Z' },
+    { value: -3210, date: '2020-02-05T16:33:06.386Z' },
+    { value: -1000, date: '2020-04-10T14:43:26.374Z' },
+    { value: 8500, date: '2020-06-25T18:49:59.371Z' },
+    { value: -30, date: '2023-04-27T12:01:20.894Z' },
+  ],
+  interestRate: 1.5,
+  pin: 3333,
+  currency: 'JPY',
+  locale: 'ja-JP',
+};
+
+const accounts = [account1, account2, account3];
 
 /////////////////////////////////////////////////
 // Elements
@@ -87,7 +105,10 @@ const inputClosePin = document.querySelector('.form__input--pin');
  */
 const formatMovementDate = (date, locale) => {
   // Format Date String
+  // console.log(date);
+
   const daysPassed = calcDaysPassed(date, new Date());
+  // console.log(daysPassed);
 
   if (daysPassed < 1 && daysPassed >= 0) return 'Today';
   if (daysPassed >= 1 && daysPassed < 2) return `yesterday`;
@@ -378,6 +399,22 @@ btnTransfer.addEventListener('click', event => {
     account => account.username === transferTo
   );
 
+  // Currency convertion using external API call
+  let convertRate;
+  (async function () {
+    const response = await fetch(
+      `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${currentAccount.currency.toLowerCase()}/${transferToAccount.currency.toLowerCase()}.json`
+    );
+    const data = await response.json();
+    convertRate = data[transferToAccount.currency.toLowerCase()];
+  })();
+  // let currentExchange = {
+  //   "USD": 1,
+  //   "EURO": 0.91,
+  //   "JPY": 124.17,
+  //   "GBP": 0.65,
+  //   "BRL": 3.51,
+  // }
   // Process the tranfer if the transferToAccount exist, the amount is greater than 0 and the amount is lesser than the balance
   if (
     transferToAccount?.username &&
@@ -387,12 +424,15 @@ btnTransfer.addEventListener('click', event => {
   ) {
     setTimeout(() => {
       // Doing the transfer
-      currentAccount.movements.push(-amount);
-      currentAccount.movementsDates.push(new Date());
+      const movement = { value: -amount, date: new Date().toISOString() };
+      currentAccount.movements.push(movement);
 
       // Add transfer date
-      transferToAccount.movements.push(amount);
-      currentAccount.movementsDates.push(new Date());
+      const movementTo = {
+        value: amount * convertRate,
+        date: new Date().toISOString(),
+      };
+      transferToAccount.movements.push(movementTo);
 
       updateUI(currentAccount);
     }, 3000);
@@ -414,16 +454,19 @@ btnLoan.addEventListener('click', event => {
   if (timer) clearInterval(timer);
   timer = timerOut();
   const inputLoan = Math.floor(inputLoanAmount.value);
+  console.log(inputLoan);
+  console.log(currentAccount.movements);
+
   if (
     inputLoan > 0 &&
-    currentAccount.movements.some(amount => amount >= inputLoan * 0.1)
+    currentAccount.movements.some(movement => movement.value >= inputLoan * 0.1)
   ) {
     setTimeout(() => {
       // Add movement
-      currentAccount.movements.push(inputLoan);
-
-      // Add loan date
-      currentAccount.movementsDates.push(new Date().toISOString());
+      console.log(new Date());
+      const movement = { value: inputLoan, date: new Date().toISOString() };
+      currentAccount.movements.push(movement);
+      currentAccount.movements.forEach(movement => console.log(movement.date));
 
       // Update UI
       updateUI(currentAccount);
