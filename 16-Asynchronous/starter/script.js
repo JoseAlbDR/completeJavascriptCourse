@@ -295,10 +295,39 @@ const getGPSData = function (gps) {
         renderCountry(...data);
       });
     })
-    .catch(err => console.error(err));
-  // .finally(() => (countriesContainer.style.opacity = 1));
+    .catch(err => console.error(err))
+    .finally(() => (countriesContainer.style.opacity = 1));
 };
 
 btn.addEventListener('click', function () {
   getGPSData([-33.933, 18.474]);
 });
+
+// console.log('Test start'); // First call stack
+// setTimeout(() => console.log('0 sec timer'), 0); // Fifth callback qeue
+// Promise.resolve('Resolved promise 1').then(res => console.log(res)); // Third microtask qeue
+// Promise.resolve('Resolved promise 2').then(res => {
+//   // Fourth microtask qeue
+//   for (let i = 0; i < 10000000; i++) {}
+//   console.log(res);
+// });
+// console.log('Test end'); // Second call stack
+
+// CREATE PROMISES
+
+const lotteryPromise = new Promise(function (resolve, reject) {
+  console.log('Lottery draw is happening.');
+
+  setTimeout(function () {
+    if (Math.random() >= 0.5) {
+      resolve('You WIN.'); // then
+    } else {
+      reject(new Error('You LOSE.')); // catch
+    }
+  }, 2000);
+});
+
+// Consume promise
+lotteryPromise
+  .then(resolve => console.log(resolve)) // Catch resolve
+  .catch(err => console.error(err)); // Catch reject
