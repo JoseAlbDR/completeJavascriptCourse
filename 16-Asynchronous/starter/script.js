@@ -331,3 +331,31 @@ const lotteryPromise = new Promise(function (resolve, reject) {
 lotteryPromise
   .then(resolve => console.log(resolve)) // Catch resolve
   .catch(err => console.error(err)); // Catch reject
+
+// Promisifying setTimeout
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+wait(1)
+  .then(() => {
+    console.log('I waited for 1 second.');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('I waited for 2 seconds.');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('I waited for 3 seconds');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('I waited for 4 seconds');
+    return wait(1);
+  });
+
+Promise.resolve('abc').then(x => console.log(x));
+Promise.reject('abc').catch(x => console.error(x));
