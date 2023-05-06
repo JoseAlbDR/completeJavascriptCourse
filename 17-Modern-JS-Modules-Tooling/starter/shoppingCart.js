@@ -2,6 +2,11 @@
 
 console.log('Exporting Module.');
 
+// Bocking code
+// console.log('Start fetching users.');
+// await fetch('https://jsonplaceholder.typicode.com/users');
+// console.log('Finish fetching users.');
+
 const shippingCost = 10;
 const cart = [];
 
