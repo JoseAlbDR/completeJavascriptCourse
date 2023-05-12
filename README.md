@@ -4,17 +4,17 @@ Javascript course from Udemy
 All the dirs contains final code done by the teacher and starter code done by me.
 
 ## Projects inside the Course:
-* ### Guess My Number
+### Guess My Number
 - Very simple practice App to guess a number between 1 and 20
 - [Guess My Number Repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/05-Guess-My-Number/starter)
 - [Guess My Number Web Page](https://guessnumber-jadr.netlify.app)
 
-* ### Pig Game
+### Pig Game
 - Pig game with dice rolls
 - [Pig Game Repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/07-Pig-Game/starter)
 - [Pig Game Web Page](https://piggame-jadr.netlify.app)
 
-* ### Bankist APP
+### Bankist APP
 - BANK app with 3 accounts to test functionality.
 - Test Accounts to log in:
   - js / 1111
@@ -30,12 +30,12 @@ All the dirs contains final code done by the teacher and starter code done by me
 - [Bakist App Repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/12-Numbers-Dates-Timers-Bankist/starter)
 - [Bankist App Web Page](https://bankist-app-jadr.netlify.app)
 
-* ### Bankist FrontPage
+### Bankist FrontPage
 - FrontPage with some effects done with listeners and observers.
 - [Bankist FrontPage Repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/13-Advanced-DOM-Bankist/starter)
 - [Bankist FrontPage Web Page](https://bankist-jadr.netlify.app)
 
-* ### Mapty APP
+### Mapty APP
 - App that load a map in your current position and allow to put PopUps with either running or cicling exercices
 - You must allow GeoLocation in browser in order to see the map
 - App instructions:
@@ -47,6 +47,6 @@ All the dirs contains final code done by the teacher and starter code done by me
 - [Mapty App repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/15-Mapty/starter)
 - [Mapty App Web Page](https://mapty-jadr.netlify.app/)
 
-* ### Forkify
+### Forkify
 - This app has his own repo
 - [Forkify Repo](https://github.com/JoseAlbDR/forkify)
