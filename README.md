@@ -1,7 +1,10 @@
 # The Complete JavaScript Course 2023
-Javascript course from Udemy
-[Course](https://www.udemy.com/course/the-complete-javascript-course)
+Javascript course from Udemy.
+
+[Course](https://www.udemy.com/course/the-complete-javascript-course).
+
 All the dirs contains final code done by the teacher and starter code done by me.
+
 All paged hosted in netlify are linked to their GitHub repository for continuous deployment.
 
 ## Projects inside the Course:
