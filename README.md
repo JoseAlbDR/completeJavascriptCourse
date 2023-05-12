@@ -33,7 +33,7 @@ All the dirs contains final code done by the teacher and starter code done by me
 * Bankist FrontPage
 - FrontPage with some effects done with listeners and observers.
 - [Bankist FrontPage Repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/13-Advanced-DOM-Bankist/starter)
-- [Bankist FrontPage Web Page] (https://bankist-jadr.netlify.app)
+- [Bankist FrontPage Web Page](https://bankist-jadr.netlify.app)
 
 * Mapty APP
 - App that load a map in your current position and allow to put PopUps with either running or cicling exercices
