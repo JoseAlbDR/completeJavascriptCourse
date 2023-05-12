@@ -17,15 +17,15 @@ All the dirs contains final code done by the teacher and starter code done by me
 * Bankist APP
 - BANK app with 3 accounts to test functionality.
 - Test Accounts to log in:
-- - js / 1111
-- - jd / 2222
-- - cn / 3333
+  - js / 1111
+  - jd / 2222
+  - cn / 3333
 - App functionality:
-- - Transfer money between the accounts.
-- - - Money transfered will be converted to account currency, conversion is made calling an external API.
-- - Request loan
-- - Close account
-- - Sort movements
+  - Transfer money between the accounts.
+    - Money transfered will be converted to account currency, conversion is made calling an external API.
+  - Request loan
+  - Close account
+  - Sort movements
 - Autolog out after 5 mins if no action done in that time
 - [Bakist App Repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/12-Numbers-Dates-Timers-Bankist/starter)
 - [Bankist App Web Page](https://bankist-app-jadr.netlify.app)
@@ -39,11 +39,11 @@ All the dirs contains final code done by the teacher and starter code done by me
 - App that load a map in your current position and allow to put PopUps with either running or cicling exercices
 - You must allow GeoLocation in browser in order to see the map
 - App instructions:
-- - Click on the map
-- - Complete the exersice choosing between running or cicling and press Enter
-- - A popup will shown where you clicked
-- - By clicking the exercise map will move to the popup
-- - Data persist in local storage
+  - Click on the map
+  - Complete the exersice choosing between running or cicling and press Enter
+  - A popup will shown where you clicked
+  - By clicking the exercise map will move to the popup
+  - Data persist in local storage
 - [Mapty App repo](https://github.com/JoseAlbDR/completeJavascriptCourse/tree/master/15-Mapty/starter)
 - [Mapty App Web Page](https://mapty-jadr.netlify.app/)
 
